@@ -1,0 +1,56 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+       	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>INFO4290 Path Finding Project</title>
+    <link rel="stylesheet" href="./pathfinding.css"/>
+
+   
+
+
+</head>
+    
+
+    <body>
+       
+        <div id="title">Simple Path Finding Visualizer</div>
+        <div class="navBar">
+            
+                <div id = "dropdown" class="navOption" >
+                    <span>Algorithms</span>
+                    <div id="algorithm">
+                        <div class="dropdownBorder" onclick="">A*</div>
+                        <div class="dropdownBorder" onclick="">Dijkstras'</div>
+                    </div>
+
+                </div>
+                <div class="navOption" onclick="">Place Random Blocks</div>
+                <div class="navOption" onclick="">Start</div>
+                <div class="navOption" onclick="gridGen()">Reload Grid</div>
+                <div id="dropdown" class="navOption">
+                    <span>About This Project</span>
+                    <p id="algorithm" class="dropdownBorder" style="width:94%; text-align: left;">
+                        >>This project visualizes the A* and Dijkstras' path finding process. </br>
+                        >>To play around with it, place wall blocks as you wish, select an algorithm, 
+                        choose a start and an end point on the grid then kick start the visualizer. </p>
+                
+                
+                </div>
+                
+          
+        </div>
+    
+        <div id = "container">
+            <table id="mygrid">
+        </div>
+    
+    </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  
+  <script src="./grid.js"></script>
+  
+  
+</html>  
+
+
+

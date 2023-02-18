@@ -1,0 +1,179 @@
+.node {
+   
+    width: 20px;
+    height:20px;
+    outline: 1.5px solid rgb(66, 134, 186);
+    display:-ms-inline-grid;
+    display:legacy;
+    
+  }
+  .node:hover{
+    cursor: default;
+  }
+
+  
+  .nodeFinish {
+    background: linear-gradient(135deg, red,pink,white,pink,red);
+    text-align: center;
+    font-size: smaller;
+    cursor: pointer;
+    -webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+-o-user-select: none;
+user-select: none;
+  }
+
+  
+  .nodeStart {
+    background: linear-gradient(45deg,green,lightgreen,white,lightgreen,green);
+    text-align: center;
+    font-size: smaller;
+    cursor: pointer;
+    
+    -webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+-o-user-select: none;
+user-select: none;
+  }
+ 
+  
+
+  body{
+    background-color: aquamarine;
+    margin:0;
+    max-zoom:1.0;
+    text-align: center;
+    user-zoom: no;
+    scale: 1.0;
+    height:100%;
+    overflow: hidden;
+    align-items:center;
+}
+   
+div{
+    margin:0 0 0;
+    padding: 0%;
+    
+    
+}
+
+.mygrid {
+    margin: 50px 0 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  #container{ 
+    height:90%;
+    width:98%;
+    
+    margin-left: 1.5% ;
+    
+  
+  }
+
+
+  .navBar{
+    width: 100%;
+    cursor: pointer;
+    padding-bottom: 5%;
+    
+  }
+
+
+.navOption{ margin: 0%;
+  font-size: 20px;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  text-size-adjust:auto;
+  overflow:visible;
+  color:aliceblue;
+  width:20%;
+  float:left;
+  background-color: black;
+  display:block;
+}
+
+.navOption:hover{
+  background-color: rgb(70, 53, 53);
+}
+
+#dropdown{
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+#algorithm{
+  display:none;
+  position:absolute;
+  width:100%;
+  
+  min-width: 100px;
+  background-color: aliceblue;
+  color:black;
+  z-index: auto;
+  opacity: 0.75;
+  margin-top:5%;
+  
+  text-align: center;
+  
+}
+
+#dropdown:hover #algorithm{
+  display:block;
+  cursor: pointer;
+}
+
+.dropdownBorder{
+  padding:2%;
+  border: 2px solid black;
+}
+.dropdownBorder:hover{
+  background-color: rgb(110, 105, 105);
+
+}
+
+#title{
+  font-size:x-large; 
+  font-weight: bolder; 
+  background-color:white; 
+  padding: 0.5%;
+}
+
+
+@media screen and (min-width:720px) and (max-width: 980px){
+  .navOption{
+    font-size:16px;
+  }
+}
+@media screen and (min-width:530px) and (max-width: 720px){
+  .navOption{
+    font-size:12px;
+  }
+}
+@media screen and (min-width:360px) and (max-width:530px){
+  .navOption{
+    font-size:10px;
+    height:20px;
+    padding-top:6px;
+    padding-bottom: 7px;
+  }
+  #title{
+    font-size:20px;
+  }
+}
+@media only screen and (max-width:360px){
+  .navOption{
+    font-size:8px;
+    height:22px;
+  }
+  #title{
+    font-size:14px;
+  }
+}
