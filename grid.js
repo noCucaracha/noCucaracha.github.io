@@ -4,7 +4,9 @@ class Node {
         this.nodeState = nodeState;
         this.row = row;
         this.column = column;
-        this.isObstacle = false;
+        isObstacle = false;
+        isCurrentNode = false;
+        isVisited = false;
 
     }
 };
@@ -41,6 +43,7 @@ function gridGen(){
                 nodeState="nodeStart";
                 hasStart=true;
                 nodeContent = "S";
+                isCurrentNode = true;
                 
             }
             else if (row===rand3&&column===rand4&&hasFinish===false&&nodeState!="nodeStart"){
@@ -50,7 +53,7 @@ function gridGen(){
 
             
             }
-            innerGrid[row][column]=newNode;
+            innerGrid[row][column]=nodeID;
             currentRow.push(newNode);
             currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}">${nodeContent}</td>`;
         }
