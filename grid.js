@@ -4,6 +4,7 @@ class Node {
         this.nodeState = nodeState;
         this.row = row;
         this.column = column;
+        this.isObstacle = false;
 
     }
 };
@@ -26,6 +27,7 @@ function gridGen(){
     let rand3 = Math.abs(getRandInt(bheight));
     let rand4 = Math.abs(getRandInt(bwidth));
     
+    let innerGrid = {};
 
     let tableHTML ="<tbody>";
     for(let row=0; row<bheight; row++){
@@ -48,7 +50,7 @@ function gridGen(){
 
             
             }
-            
+            innerGrid[row][column]=newNode;
             currentRow.push(newNode);
             currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}">${nodeContent}</td>`;
         }
