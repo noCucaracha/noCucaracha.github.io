@@ -7,11 +7,12 @@ class Node {
        let isObstacle = false;
        let isCurrentNode = false;
        let isVisited = false;
+       let distance = Infinity;
 
     }
 };
 
-
+const innerGrid= [];
 
 function getRandInt(cap){
    return Math.floor(Math.random() * cap);
@@ -29,8 +30,6 @@ function gridGen(){
     let rand3 = Math.abs(getRandInt(bheight));
     let rand4 = Math.abs(getRandInt(bwidth));
     
-    let innerGrid = {};
-
     let tableHTML ="<tbody>";
     for(let row=0; row<bheight; row++){
         let currentRow = [];
@@ -42,17 +41,19 @@ function gridGen(){
             if(row===rand1&&column===rand2&&hasStart===false&&nodeState!="nodeFinish"){
                 nodeState="nodeStart";
                 hasStart=true;
+               
                 nodeContent = "S";
-                isCurrentNode = true;
                 
             }
             else if (row===rand3&&column===rand4&&hasFinish===false&&nodeState!="nodeStart"){
                 nodeState="nodeFinish";
                 hasFinish=true; 
+              
                 nodeContent = "F";
 
             
             }
+            innerGrid.push(newNode);
             currentRow.push(newNode);
             currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}">${nodeContent}</td>`;
         }
@@ -70,3 +71,17 @@ function gridGen(){
 
 gridGen();
 
+
+
+let dijkstra = (grid)=>{
+ let distance ={};
+ let visitedNodes = [];
+ let childNode;
+    while(!grid.length){
+        if(grid.nodeState=="nodeStart"){
+            isCurrentNode = true;
+
+        }
+        grid.sort()
+    }
+}
