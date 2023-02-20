@@ -4,9 +4,9 @@ class Node {
         this.nodeState = nodeState;
         this.row = row;
         this.column = column;
-        isObstacle = false;
-        isCurrentNode = false;
-        isVisited = false;
+       let isObstacle = false;
+       let isCurrentNode = false;
+       let isVisited = false;
 
     }
 };
