@@ -53,7 +53,6 @@ function gridGen(){
 
             
             }
-            innerGrid[row][column]=nodeID;
             currentRow.push(newNode);
             currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}">${nodeContent}</td>`;
         }
