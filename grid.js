@@ -12,14 +12,14 @@ class Node {
     }
 };
 
-const innerGrid= [];
+
 
 function getRandInt(cap){
    return Math.floor(Math.random() * cap);
 }
 
 let counter = 0;
-
+const innerGrid = [];
 var gheight=document.getElementById("container").offsetHeight;
 var gwidth=document.getElementById("container").offsetWidth;
 var bheight=Math.ceil(gheight/25);
@@ -27,7 +27,6 @@ var bwidth=Math.ceil(gwidth/25);
 
 function gridGen(){
     counter = 0;
-   
     let hasStart = false, hasFinish = false;
     let rand1 = Math.abs(getRandInt(bheight));
     let rand2 = Math.abs(getRandInt(bwidth));
@@ -80,10 +79,10 @@ gridGen();
 function makeWall (id){
 
 let node = document.getElementById(id);
-if(node.className!="nodeStart"&&node.className!="nodeFinish"){
+if(!(node.className=="nodeStart"&&node.className=="nodeFinish")){
   node.className = "Obstacle";
 }
-else if (node.className == "Obstacle"){
+if (!node.className == "node"){
     node.className = "node";
 }
    
