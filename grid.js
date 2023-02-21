@@ -4,8 +4,6 @@ class Node {
         this.nodeState = nodeState;
         this.row = row;
         this.column = column;
-       let isObstacle = false;
-       let isCurrentNode = false;
        let isVisited = false;
        let distance = Infinity;
 
@@ -79,26 +77,34 @@ gridGen();
 function makeWall (id){
 
 let node = document.getElementById(id);
-if(!(node.className=="nodeStart"&&node.className=="nodeFinish")){
+if(node.className == "node"){
   node.className = "Obstacle";
 }
-if (!node.className == "node"){
+else {
     node.className = "node";
 }
    
 }
 
-
+let maxcount = 2*(bheight+bwidth)
 function PlaceRandWall(){
     for(let i = 0; i <10;i++){
         let row = Math.abs(getRandInt(bheight));
         let col = Math.abs(getRandInt(bwidth));
         let thisNode = document.getElementById(`row${row}_column${col}`);
-        if(counter<(bheight+bwidth)){
+        if(counter<maxcount){
             if(thisNode.className!="nodeStart"&&thisNode.className!="nodeFinish"){
             thisNode.className = "Obstacle";
             counter++;
             }
     }
 }
+}
+
+function aStar(){}
+function dijkstras(){}
+
+
+function startVisual(algorithm){
+
 }
