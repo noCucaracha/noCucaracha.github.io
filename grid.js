@@ -55,7 +55,7 @@ function gridGen(){
             }
             innerGrid.push(newNode);
             currentRow.push(newNode);
-            currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}">${nodeContent}</td>`;
+            currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}" onclick="makeWall(nodeID)">${nodeContent}</td>`;
         }
         
         tableHTML+=`${currentRowHTML}</tr>`;
@@ -73,15 +73,9 @@ gridGen();
 
 
 
-let dijkstra = (grid)=>{
- let distance ={};
- let visitedNodes = [];
- let childNode;
-    while(!grid.length){
-        if(grid.nodeState=="nodeStart"){
-            isCurrentNode = true;
-
-        }
-        grid.sort()
-    }
+let makeWall = (nodeID)=>{
+   let wallBg = document.getElementById(nodeID).style.background;
+   let nodeState = document.getElementById(nodeID).nodeState;
+   wallBg="black";
+   nodeState = "Obstacle";
 }
