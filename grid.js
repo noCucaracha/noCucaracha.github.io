@@ -18,12 +18,16 @@ function getRandInt(cap){
    return Math.floor(Math.random() * cap);
 }
 
-function gridGen(){
+let counter = 0;
 
-    var gheight=document.getElementById("container").offsetHeight;
-    var gwidth=document.getElementById("container").offsetWidth;
-    var bheight=Math.ceil(gheight/25);
-    var bwidth=Math.ceil(gwidth/25);
+var gheight=document.getElementById("container").offsetHeight;
+var gwidth=document.getElementById("container").offsetWidth;
+var bheight=Math.ceil(gheight/25);
+var bwidth=Math.ceil(gwidth/25);
+
+function gridGen(){
+    counter = 0;
+   
     let hasStart = false, hasFinish = false;
     let rand1 = Math.abs(getRandInt(bheight));
     let rand2 = Math.abs(getRandInt(bwidth));
@@ -55,7 +59,7 @@ function gridGen(){
             }
             innerGrid.push(newNode);
             currentRow.push(newNode);
-            currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}" onclick="makeWall(nodeID)">${nodeContent}</td>`;
+            currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}" onclick="makeWall(id)">${nodeContent}</td>`;
         }
         
         tableHTML+=`${currentRowHTML}</tr>`;
@@ -73,9 +77,29 @@ gridGen();
 
 
 
-let makeWall = (nodeID)=>{
-   let wallBg = document.getElementById(nodeID).style.background;
-   let nodeState = document.getElementById(nodeID).nodeState;
-   wallBg="black";
-   nodeState = "Obstacle";
+function makeWall (id){
+
+let node = document.getElementById(id);
+if(node.className!="nodeStart"&&node.className!="nodeFinish"){
+  node.className = "Obstacle";
+}
+else if (node.className == "Obstacle"){
+    node.className = "node";
+}
+   
+}
+
+
+function PlaceRandWall(){
+    for(let i = 0; i <10;i++){
+        let row = Math.abs(getRandInt(bheight));
+        let col = Math.abs(getRandInt(bwidth));
+        let thisNode = document.getElementById(`row${row}_column${col}`);
+        if(counter<(bheight+bwidth)){
+            if(thisNode.className!="nodeStart"&&thisNode.className!="nodeFinish"){
+            thisNode.className = "Obstacle";
+            counter++;
+            }
+    }
+}
 }

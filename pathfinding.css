@@ -11,7 +11,13 @@
     cursor: default;
   }
 
-  
+  .Obstacle{
+    background: black;
+    outline: 1.5px solid rgb(66, 134, 186);
+    display:-ms-inline-grid;
+    display:legacy;
+  }
+
   .nodeFinish {
     background: linear-gradient(135deg, red,pink,white,pink,red);
     text-align: center;
