@@ -1,3 +1,6 @@
+
+
+
 class Node {
     constructor(id, nodeState, row, column) {
         this.id = id;
@@ -23,6 +26,10 @@ var gwidth=document.getElementById("container").offsetWidth;
 var bheight=Math.ceil(gheight/25);
 var bwidth=Math.ceil(gwidth/25);
 
+let startNode, endNode;
+let isStart;
+let isFinish;
+
 function gridGen(){
     counter = 0;
     let hasStart = false, hasFinish = false;
@@ -32,24 +39,26 @@ function gridGen(){
     let rand4 = Math.abs(getRandInt(bwidth));
     
     let tableHTML ="<tbody>";
+    let pos = 0;
     for(let row=0; row<bheight; row++){
         let currentRow = [];
        let currentRowHTML=`<tr id="row${row}">`;
         for(let column = 0; column<bwidth; column++){
+            pos++;
             let nodeContent = " ";
             let nodeID = `${row}-${column}`, nodeState="node";
             let newNode = new Node(nodeID, nodeState, row, column);
             if(row===rand1&&column===rand2&&hasStart===false&&nodeState!="nodeFinish"){
                 nodeState="nodeStart";
                 hasStart=true;
-               
+                isStart=pos;
                 nodeContent = "S";
                 
             }
             else if (row===rand3&&column===rand4&&hasFinish===false&&nodeState!="nodeStart"){
                 nodeState="nodeFinish";
                 hasFinish=true; 
-              
+                isFinish=pos;
                 nodeContent = "F";
 
             
@@ -101,10 +110,112 @@ function PlaceRandWall(){
 }
 }
 
-function aStar(){}
-function dijkstras(){}
 
 
-function startVisual(algorithm){
+function aStar(){
 
+
+
+}
+
+
+
+class PriorityQueue {
+    constructor() {
+      this.queue = [];
+    }
+  
+    enqueue(element, priority) {
+      const item = { element, priority };
+      let added = false;
+  
+      // loop through the queue and add the item based on its priority
+      for (let i = 0; i < this.queue.length; i++) {
+        if (item.priority < this.queue[i].priority) {
+          this.queue.splice(i, 0, item);
+          added = true;
+          break;
+        }
+      }
+  
+      // if the item has the lowest priority, add it to the end of the queue
+      if (!added) {
+        this.queue.push(item);
+      }
+    }
+  
+    dequeue() {
+      if (this.isEmpty()) {
+        return "Queue is empty";
+      }
+  
+      return this.queue.shift();
+    }
+  
+    front() {
+      if (this.isEmpty()) {
+        return "Queue is empty";
+      }
+  
+      return this.queue[0];
+    }
+  
+    rear() {
+      if (this.isEmpty()) {
+        return "Queue is empty";
+      }
+  
+      return this.queue[this.queue.length - 1];
+    }
+  
+    isEmpty() {
+      return this.queue.length === 0;
+    }
+  
+    printQueue() {
+      let result = "";
+      for (let i = 0; i < this.queue.length; i++) {
+        result += `${this.queue[i].element} `;
+      }
+      return result;
+    }
+  }
+  
+      
+
+
+let tempAlgo;
+function algSelector(algorithm){
+    switch(algorithm){
+        case "aStar":
+        tempAlgo =  "aStar";
+        
+        break;
+           
+        case "dijkstras":
+        tempAlgo =  "dijkstras";
+        break;
+           
+        default: throw "No Algorithm Selected";
+    }
+}
+
+
+function pfVisualizer(){
+    switch(tempAlgo){
+        case "":
+            break;
+        case "aStar":
+            
+            break;
+        case "dijkstras":
+          
+            break;
+        default: 
+            window.alert ("No Algorithm Selected"); 
+            throw "No Algorithm Selected"; 
+               
+
+    }
+   
 }

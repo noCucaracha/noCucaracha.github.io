@@ -18,6 +18,10 @@
     display:legacy;
   }
 
+  .nodePath{
+    background:rgb(118, 50, 166);
+  }
+
   .nodeFinish {
     background: linear-gradient(135deg, red,pink,white,pink,red);
     text-align: center;
