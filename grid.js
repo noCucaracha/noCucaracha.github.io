@@ -252,9 +252,7 @@ function pfVisualizer(){
 }
 
 
-function sortUnvisited(unvisitedNodes){
-  unvisitedNodes.sort((a,b)=> a.distance - b.distance);
-}
+
 
 let startNode = innerGrid[startRow][startCol];
 let endNode = innerGrid[endRow][endCol];
@@ -263,25 +261,20 @@ function dijkstras(){
   let visitedNodes =[];
 
   let unvisitedNodes = innerGrid;
-  while (!unvisitedNodes.length){
-    console.log(unvisitedNodes);
+ 
+  while (!!unvisitedNodes.length){
+   
     sortUnvisited(unvisitedNodes);
-    let shortestNode = unvisitedNodes.shift();
-    if (shortestNode.nodeState==="Obstacle"){
-      continue;
-    }
 
-    if(shortestNode.distance===Infinity){
+   
+    let shortestNode = unvisitedNodes.shift();
+    if (shortestNode.nodeState==="Obstacle")continue;
+    if(shortestNode.distance===Infinity) return visitedNodes;
     shortestNode.isVisited = true;
     visitedNodes.push(shortestNode);
-    return visitedNodes;
-    }
-
-    if (shortestNode === endNode){
+    if (shortestNode === endNode)return visitedNodes;
     updateUnvisitedNeighbors(shortestNode, unvisitedNodes);
-    return visitedNodesInOrder;
-    }
-
+    console.log(shortestNode);  
   }
  
   /*let unvisitedIDs = [];
@@ -303,8 +296,12 @@ function dijkstras(){
   }
 */
 getNodesInShortestPathOrder(endNode);
+
 }
 
+function sortUnvisited(unvisitedNodes){
+  unvisitedNodes.sort((a,b)=> a.distance - b.distance);
+}
 
 function updateUnvisitedNeighbors(node,grid) {
   let unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
@@ -320,22 +317,25 @@ function getUnvisitedNeighbors(node, grid) {
   if (row > 0) neighbors.push(grid[row - 1][col]);
   if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
   if (col > 0) neighbors.push(grid[row][col - 1]);
-  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-  return neighbors.filter(neighbor => !neighbor.isVisited);
+  if (col < grid.length - 1) neighbors.push(grid[row][col + 1]);
+  return neighbors.filter(neighbor => !!neighbor.isVisited);
 }
+
 
 function getNodesInShortestPathOrder(endNode) {
   let nodesInShortestPathOrder = [];
   let currentNode = endNode;
-  while (currentNode != null) {
+  while (currentNode !== null) {
     nodesInShortestPathOrder.unshift(currentNode);
     currentNode = currentNode.previousNode;
   }
+  console.log(nodesInShortestPathOrder);
+ 
   for(let i = 0; i < nodesInShortestPathOrder.length; i++){
     let row = nodesInShortestPathOrder[i].row;
     let col = nodesInShortestPathOrder[i].column;
     let pathNode = document.getElementById(`row${row}_column${col}`);
-    if(pathNode.className!="nodeFinish")
+    if(pathNode.className!=="nodeFinish")
     pathNode.className = "nodePath";
   }
 
