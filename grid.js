@@ -26,7 +26,7 @@ var gwidth=document.getElementById("container").offsetWidth;
 var bheight=Math.ceil(gheight/25);
 var bwidth=Math.ceil(gwidth/25);
 
-let startNode, endNode;
+let startRow, startCol, endRow, endCol;
 let isStart;
 let isFinish;
 
@@ -51,14 +51,16 @@ function gridGen(){
             if(row===rand1&&column===rand2&&hasStart===false&&nodeState!="nodeFinish"){
                 nodeState="nodeStart";
                 hasStart=true;
-                isStart=pos;
+                startRow = row;
+                startCol = column;
                 nodeContent = "S";
                 
             }
             else if (row===rand3&&column===rand4&&hasFinish===false&&nodeState!="nodeStart"){
                 nodeState="nodeFinish";
                 hasFinish=true; 
-                isFinish=pos;
+                endRow = row;
+                endCol = column;
                 nodeContent = "F";
 
             
@@ -85,11 +87,13 @@ gridGen();
 
 function makeWall (id){
   let node = document.getElementById(id);
-  if(node.className == "node"){
+  if(node.className === "node"){
     node.className = "Obstacle";
   }
   else {
+    if(node.className === "Obstacle"){
       node.className = "node";
+    }
   }
      
 }
@@ -191,14 +195,11 @@ let tempAlgo;
 function algSelector(algorithm){
     switch(algorithm){
         case "aStar":
-        tempAlgo =  "aStar";
-        
+        tempAlgo =  "aStar"; 
         break;
-           
         case "dijkstras":
         tempAlgo =  "dijkstras";
-        break;
-           
+        break;   
         default: throw "No Algorithm Selected";
     }
 }
@@ -209,11 +210,11 @@ function pfVisualizer(){
         case "":
             break;
         case "aStar":
-            
+          window.alert ("A*"); 
             break;
         case "dijkstras":
-          dijkstras(innerGrid,innerGrid[isStart],innerGrid[isFinish]);
-            break;
+          window.alert ("Dijkstra");
+        break;
         default: 
             window.alert ("No Algorithm Selected"); 
             throw "No Algorithm Selected"; 
@@ -224,22 +225,30 @@ function pfVisualizer(){
 }
 
 
-function getAllNodes(grid){
-  let nodes = [];
-  for(let row in grid){
-    for(let node in row){
-      nodes.push(node);
-    }
-  }
-}
+
 
 function testing(){
-  let startNode = document.getElementsByClassName("isStart");
-  let row = startNode.row;
-  let column = startNode.column;
-  const unvisitedNodes = getAllNodes(innerGrid);
-  unvisitedNodes
-  console.log("row: "+row+" column: "+column);
+  let startNode = document.getElementById(`row${startRow}_column${startCol}`);
+  let endNode = document.getElementById(`row${endRow}_column${endCol}`)
+  let row = startRow, col = startCol;
+  let currentNodeID = startNode.id;
+  let endID = endNode.id;
+  let unvisitedIDs = [];
+  for(let row = 0; row<bheight; row++){
+    for(let col =0; col< bwidth; col++){
+      let unvisitedID = `row${row}_column${col}`;
+      if(!(unvisitedID==currentNodeID||unvisitedID==endID)){
+        unvisitedIDs.push(unvisitedID);
+      }
+    }
+  }
+ 
+  
+ // console.log(String(unvisitedIDs));
+
+
+
 }
 
 testing();
+
