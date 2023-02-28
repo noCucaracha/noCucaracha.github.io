@@ -8,7 +8,7 @@ class Node {
         this.row = row;
         this.column = column;
        let isVisited = false;
-       let distance = Infinity;
+       let distance = 'Infinity';
 
     }
 };
@@ -20,7 +20,7 @@ function getRandInt(cap){
 }
 
 let counter = 0;
-const innerGrid = [];
+let innerGrid = [];
 var gheight=document.getElementById("container").offsetHeight;
 var gwidth=document.getElementById("container").offsetWidth;
 var bheight=Math.ceil(gheight/25);
@@ -39,12 +39,12 @@ function gridGen(){
     let rand4 = Math.abs(getRandInt(bwidth));
     
     let tableHTML ="<tbody>";
-    let pos = 0;
+
     for(let row=0; row<bheight; row++){
         let currentRow = [];
        let currentRowHTML=`<tr id="row${row}">`;
         for(let column = 0; column<bwidth; column++){
-            pos++;
+       
             let nodeContent = " ";
             let nodeID = `${row}-${column}`, nodeState="node";
             let newNode = new Node(nodeID, nodeState, row, column);
@@ -65,11 +65,11 @@ function gridGen(){
 
             
             }
-            innerGrid.push(newNode);
+        
             currentRow.push(newNode);
             currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}" onclick="makeWall(id)">${nodeContent}</td>`;
         }
-        
+        innerGrid.push(currentRow);
         tableHTML+=`${currentRowHTML}</tr>`;
     }
 
@@ -228,11 +228,13 @@ function pfVisualizer(){
 
 
 function testing(){
+  let visitedNodesIDs =[];
   let startNode = document.getElementById(`row${startRow}_column${startCol}`);
   let endNode = document.getElementById(`row${endRow}_column${endCol}`)
   let row = startRow, col = startCol;
   let currentNodeID = startNode.id;
   let endID = endNode.id;
+
   let unvisitedIDs = [];
   for(let row = 0; row<bheight; row++){
     for(let col =0; col< bwidth; col++){
@@ -243,8 +245,16 @@ function testing(){
     }
   }
  
+  while(!unvisitedIDs.length){
   
- // console.log(String(unvisitedIDs));
+
+
+
+
+  }
+
+ console.log(innerGrid);
+
 
 
 
