@@ -84,16 +84,16 @@ gridGen();
 
 
 function makeWall (id){
+  let node = document.getElementById(id);
+  if(node.className == "node"){
+    node.className = "Obstacle";
+  }
+  else {
+      node.className = "node";
+  }
+     
+}
 
-let node = document.getElementById(id);
-if(node.className == "node"){
-  node.className = "Obstacle";
-}
-else {
-    node.className = "node";
-}
-   
-}
 
 let maxcount = 2*(bheight+bwidth)
 function PlaceRandWall(){
@@ -117,6 +117,9 @@ function aStar(){
 
 
 }
+
+
+
 
 
 
@@ -209,7 +212,7 @@ function pfVisualizer(){
             
             break;
         case "dijkstras":
-          
+          dijkstras(innerGrid,innerGrid[isStart],innerGrid[isFinish]);
             break;
         default: 
             window.alert ("No Algorithm Selected"); 
@@ -219,3 +222,58 @@ function pfVisualizer(){
     }
    
 }
+
+
+//grid: innerGrid; start: pos start; end: pos end.
+let dijkstras=(innerGrid, isStart, isFinish)=>{
+  let distances = {};
+  distances[isFinish] = "Infinity";
+  distances = Object.assign(distances,innerGrid[isStart]);
+  let parents = {isFinish: null};
+  for (let child in innerGrid[isStart]){
+    parents[child] = isStart;
+  }
+
+  let visited = [];
+  let thisNode = nodeShortestDistance(distances, visited);
+  while (thisNode){
+    let distance = distances[thisNode];
+    let children = innerGrid[thisNode];
+    for(let child in children){
+      if(String(child)===String(isStart)){
+        continue;
+      }
+      else{
+        let newDistance = distance + children [child];
+        if(!distances[child]||distances[child]>newDistance){
+          distances[child]=newDistance;
+          parents[child]=thisNode;
+        }
+      }
+    }
+    visited.push(thisNode);
+    thisNode = nodeShortestDistance(distance,visited);
+  }
+
+  let shortestPath = [isFinish];
+  let parent = parents[isFinish];
+  while (parent){
+    shortestPath.push(parent);
+    parent = parents[parent];
+  }
+  shortestPath.reverse();
+
+}
+
+let nodeShortestDistance=(distance, visited)=>{
+  let isShortest = null;
+  for(let thisNode in distance){
+    let isShortestCurrentNode = (isShortest === null) || (distance[thisNode]<distance[isShortest]);
+    if(isShortestCurrentNode && !visited.includes(thisNode)){
+      isShortest = thisNode;
+    }
+  }
+  return isShortest;
+}
+
+console.log(dijkstras(innerGrid,isStart,isFinish))
