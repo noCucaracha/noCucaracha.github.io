@@ -7,7 +7,7 @@ class Node {
         this.nodeState = nodeState;
         this.row = row;
         this.column = column;
-       this.isVisited;
+       this.isVisited = false;
       this.distance = Infinity;
       this.previousNode = null;
 
@@ -33,6 +33,7 @@ let isFinish;
 
 function gridGen(){
     counter = 0;
+  
     let hasStart = false, hasFinish = false;
     let rand1 = Math.abs(getRandInt(bheight));
     let rand2 = Math.abs(getRandInt(bwidth));
@@ -60,6 +61,7 @@ function gridGen(){
                 startCol = column;
                 nodeContent = "S";
                 newNode.distance = 0;
+                newNode.isVisited=true;
                 
             }
             else if (row===rand3&&column===rand4&&hasFinish===false&&nodeState!="nodeStart"){
@@ -74,6 +76,7 @@ function gridGen(){
             }
         
             currentRow.push(newNode);
+            
             currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}" onclick="makeWall(id)">${nodeContent}</td>`;
         }
         innerGrid.push(currentRow);
@@ -149,75 +152,6 @@ function aStar(){
 
 }
 
-
-
-
-
-
-class PriorityQueue {
-    constructor() {
-      this.queue = [];
-    }
-  
-    enqueue(element, priority) {
-      const item = { element, priority };
-      let added = false;
-  
-      // loop through the queue and add the item based on its priority
-      for (let i = 0; i < this.queue.length; i++) {
-        if (item.priority < this.queue[i].priority) {
-          this.queue.splice(i, 0, item);
-          added = true;
-          break;
-        }
-      }
-  
-      // if the item has the lowest priority, add it to the end of the queue
-      if (!added) {
-        this.queue.push(item);
-      }
-    }
-  
-    dequeue() {
-      if (this.isEmpty()) {
-        return "Queue is empty";
-      }
-  
-      return this.queue.shift();
-    }
-  
-    front() {
-      if (this.isEmpty()) {
-        return "Queue is empty";
-      }
-  
-      return this.queue[0];
-    }
-  
-    rear() {
-      if (this.isEmpty()) {
-        return "Queue is empty";
-      }
-  
-      return this.queue[this.queue.length - 1];
-    }
-  
-    isEmpty() {
-      return this.queue.length === 0;
-    }
-  
-    printQueue() {
-      let result = "";
-      for (let i = 0; i < this.queue.length; i++) {
-        result += `${this.queue[i].element} `;
-      }
-      return result;
-    }
-  }
-  
-      
-
-
 let tempAlgo;
 function algSelector(algorithm){
     switch(algorithm){
@@ -227,7 +161,9 @@ function algSelector(algorithm){
         case "dijkstras":
         tempAlgo =  "dijkstras";
         break;   
-        default: throw "No Algorithm Selected";
+        default: 
+          throw "Please select an algorithm."
+          
     }
 }
 
@@ -241,9 +177,12 @@ function pfVisualizer(){
             break;
         case "dijkstras":
           dijkstras();
+          getNodesInShortestPathOrder(endNode);
+
           break;
         default: 
-            window.alert ("No Algorithm Selected"); 
+          dijkstras(); //testing;
+            //window.alert ("No Algorithm Selected"); 
             throw "No Algorithm Selected"; 
                
 
@@ -252,31 +191,43 @@ function pfVisualizer(){
 }
 
 
-
-
 let startNode = innerGrid[startRow][startCol];
 let endNode = innerGrid[endRow][endCol];
+function getNodes(innerGrid){
+  let unvisited=[];
+  for(let row = 0; row <bheight; row++){
+    for (let column = 0; column < bwidth; column++){
+      unvisited.push(innerGrid[row][column]);
+    }
+  }
+  return unvisited;
+}
+
 
 function dijkstras(){
-  let visitedNodes =[];
-
-  let unvisitedNodes = innerGrid;
  
-  while (!!unvisitedNodes.length){
-   
-    sortUnvisited(unvisitedNodes);
 
+  let visitedNodes =[];
+  let shortestNode;
+  
+  
+  const unvisited = getNodes(innerGrid);
+  
+ 
+  while (!!unvisited.length){
+    
    
-    let shortestNode = unvisitedNodes.shift();
+    sortUnvisited(unvisited);
+
+    shortestNode = unvisited.shift();
     if (shortestNode.nodeState==="Obstacle")continue;
     if(shortestNode.distance===Infinity) return visitedNodes;
     shortestNode.isVisited = true;
     visitedNodes.push(shortestNode);
     if (shortestNode === endNode)return visitedNodes;
-    updateUnvisitedNeighbors(shortestNode, unvisitedNodes);
-    console.log(shortestNode);  
+    updateUnvisitedNeighbors(shortestNode, innerGrid);
+   
   }
- 
   /*let unvisitedIDs = [];
   for(let row = 0; row<bheight; row++){
     for(let col =0; col< bwidth; col++){
@@ -288,57 +239,60 @@ function dijkstras(){
   }
  
   while(!unvisitedIDs.length){
-  
-
-
-
 
   }
 */
-getNodesInShortestPathOrder(endNode);
-
 }
+
 
 function sortUnvisited(unvisitedNodes){
   unvisitedNodes.sort((a,b)=> a.distance - b.distance);
 }
 
-function updateUnvisitedNeighbors(node,grid) {
-  let unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
-  for (let neighbor in unvisitedNeighbors) {
+function updateUnvisitedNeighbors(node,innerGrid) {
+  
+  let unvisitedNeighbors = getUnvisitedNeighbors(node, innerGrid);
+  
+  for (let neighbor of unvisitedNeighbors) {
     neighbor.distance = node.distance + 1;
     neighbor.previousNode = node;
   }
+  
 }
 
-function getUnvisitedNeighbors(node, grid) {
+function getUnvisitedNeighbors(node, innerGrid) {
   let neighbors = [];
-  let {col, row} = node;
-  if (row > 0) neighbors.push(grid[row - 1][col]);
-  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
-  if (col > 0) neighbors.push(grid[row][col - 1]);
-  if (col < grid.length - 1) neighbors.push(grid[row][col + 1]);
-  return neighbors.filter(neighbor => !!neighbor.isVisited);
+  let row = node.row;
+  let col = node.column;
+ 
+  if (row > 0) neighbors.push(innerGrid[row - 1][col]);
+  if (row < bheight - 1) neighbors.push(innerGrid[row + 1][col]);
+  if (col > 0) neighbors.push(innerGrid[row][col - 1]);
+  if (col < bwidth - 1) neighbors.push(innerGrid[row][col + 1]);
+  return neighbors.filter(neighbor => !neighbor.isVisited);
+  
 }
 
 
 function getNodesInShortestPathOrder(endNode) {
-  let nodesInShortestPathOrder = [];
+  let shortestPath = [];
   let currentNode = endNode;
-  while (currentNode !== null) {
-    nodesInShortestPathOrder.unshift(currentNode);
+ 
+
+  while (currentNode != null) {
+    shortestPath.unshift(currentNode);
     currentNode = currentNode.previousNode;
   }
-  console.log(nodesInShortestPathOrder);
+
  
-  for(let i = 0; i < nodesInShortestPathOrder.length; i++){
-    let row = nodesInShortestPathOrder[i].row;
-    let col = nodesInShortestPathOrder[i].column;
+ 
+  for(let i = 0; i < shortestPath.length; i++){
+    let row = shortestPath[i].row;
+    let col = shortestPath[i].column;
     let pathNode = document.getElementById(`row${row}_column${col}`);
-    if(pathNode.className!=="nodeFinish")
+    if(!(pathNode.className=="nodeFinish"||pathNode.className=="nodeStart"))
     pathNode.className = "nodePath";
   }
-
 
 }
 
