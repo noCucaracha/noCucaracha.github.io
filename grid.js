@@ -16,12 +16,22 @@ class Node {
 
 
 
+class grid {
+  constructor(startNode,endNode){
+  this.startNode = startNode;
+  this.endNode = endNode;
+  }
+}
+
+
+
+
 function getRandInt(cap){
    return Math.floor(Math.random() * cap);
 }
 
 let counter = 0;
-let innerGrid = [];
+let innerGrid;
 var gheight=document.getElementById("container").offsetHeight;
 var gwidth=document.getElementById("container").offsetWidth;
 var bheight=Math.ceil(gheight/25);
@@ -30,10 +40,12 @@ var bwidth=Math.ceil(gwidth/25);
 let startRow, startCol, endRow, endCol;
 let isStart;
 let isFinish;
+let mygrid;
 
 function gridGen(){
     counter = 0;
-  
+    innerGrid=[];
+    
     let hasStart = false, hasFinish = false;
     let rand1 = Math.abs(getRandInt(bheight));
     let rand2 = Math.abs(getRandInt(bwidth));
@@ -83,7 +95,13 @@ function gridGen(){
         tableHTML+=`${currentRowHTML}</tr>`;
     }
 
-    
+    let createClassGrid=()=>{
+      let startNode = innerGrid[startRow][startCol];
+      let endNode = innerGrid[endRow][endCol];
+      let classGrid = new grid(startNode,endNode);  
+      return classGrid;  
+    }
+    classGrid = createClassGrid();
 
     tableHTML+="</tbody>";
     let mygrid = document.getElementById("mygrid");
@@ -177,7 +195,7 @@ function pfVisualizer(){
             break;
         case "dijkstras":
           dijkstras();
-          getNodesInShortestPathOrder(endNode);
+          getNodesInShortestPathOrder();
 
           break;
         default: 
@@ -191,8 +209,7 @@ function pfVisualizer(){
 }
 
 
-let startNode = innerGrid[startRow][startCol];
-let endNode = innerGrid[endRow][endCol];
+
 function getNodes(innerGrid){
   let unvisited=[];
   for(let row = 0; row <bheight; row++){
@@ -204,14 +221,16 @@ function getNodes(innerGrid){
 }
 
 
-function dijkstras(){
- 
 
+function dijkstras(){
+  
   let visitedNodes =[];
   let shortestNode;
   
+  let endNode = classGrid.endNode;
   
-  const unvisited = getNodes(innerGrid);
+  
+  let unvisited = getNodes(innerGrid);
   
  
   while (!!unvisited.length){
@@ -220,6 +239,7 @@ function dijkstras(){
     sortUnvisited(unvisited);
 
     shortestNode = unvisited.shift();
+    console.log(shortestNode);
     if (shortestNode.nodeState==="Obstacle")continue;
     if(shortestNode.distance===Infinity) return visitedNodes;
     shortestNode.isVisited = true;
@@ -242,6 +262,7 @@ function dijkstras(){
 
   }
 */
+
 }
 
 
@@ -274,9 +295,10 @@ function getUnvisitedNeighbors(node, innerGrid) {
 }
 
 
-function getNodesInShortestPathOrder(endNode) {
+function getNodesInShortestPathOrder() {
+ 
   let shortestPath = [];
-  let currentNode = endNode;
+  let currentNode = classGrid.endNode;
  
 
   while (currentNode != null) {
@@ -293,7 +315,7 @@ function getNodesInShortestPathOrder(endNode) {
     if(!(pathNode.className=="nodeFinish"||pathNode.className=="nodeStart"))
     pathNode.className = "nodePath";
   }
-
+  currentNode = null;
 }
 
 
