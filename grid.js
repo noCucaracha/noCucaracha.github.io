@@ -305,20 +305,21 @@ function getNodesInShortestPathOrder() {
   }
 
   
- 
+  let vP = ()=>{
   for(let i = 0; i < shortestPath.length; i++){
     let row = shortestPath[i].row;
     let col = shortestPath[i].column;
     
    
     let pathNode = document.getElementById(`row${row}_column${col}`);
-    let vP = ()=>{
+   
     if(!(pathNode.className=="nodeFinish"||pathNode.className=="nodeStart"))
     pathNode.className = "nodePath";
     
     }
-    setInterval(vP,1000);
+    
   }
+  setInterval(vP,1000);
   } 
   
    
