@@ -1,5 +1,14 @@
+let counter = 0;
+let innerGrid;
+var gheight=document.getElementById("container").offsetHeight;
+var gwidth=document.getElementById("container").offsetWidth;
+var bheight=Math.ceil(gheight/25);
+var bwidth=Math.ceil(gwidth/25);
 
-
+let startRow, startCol, endRow, endCol;
+let isStart;
+let isFinish;
+let mygrid;
 
 class Node {
     constructor(id, nodeState, row, column) {
@@ -30,17 +39,7 @@ function getRandInt(cap){
    return Math.floor(Math.random() * cap);
 }
 
-let counter = 0;
-let innerGrid;
-var gheight=document.getElementById("container").offsetHeight;
-var gwidth=document.getElementById("container").offsetWidth;
-var bheight=Math.ceil(gheight/25);
-var bwidth=Math.ceil(gwidth/25);
 
-let startRow, startCol, endRow, endCol;
-let isStart;
-let isFinish;
-let mygrid;
 
 function gridGen(){
     counter = 0;
@@ -239,7 +238,6 @@ function dijkstras(){
     sortUnvisited(unvisited);
 
     shortestNode = unvisited.shift();
-    console.log(shortestNode);
     if (shortestNode.nodeState==="Obstacle")continue;
     if(shortestNode.distance===Infinity) return visitedNodes;
     shortestNode.isVisited = true;
@@ -306,16 +304,25 @@ function getNodesInShortestPathOrder() {
     currentNode = currentNode.previousNode;
   }
 
- 
+  
  
   for(let i = 0; i < shortestPath.length; i++){
     let row = shortestPath[i].row;
     let col = shortestPath[i].column;
+    
+   
     let pathNode = document.getElementById(`row${row}_column${col}`);
+    let vP = ()=>{
     if(!(pathNode.className=="nodeFinish"||pathNode.className=="nodeStart"))
     pathNode.className = "nodePath";
+    
+    }
+    setInterval(vP,1000);
   }
-  currentNode = null;
-}
+  } 
+  
+   
+
+
 
 
