@@ -1,14 +1,19 @@
-let counter = 0;
-let innerGrid;
-var gheight=document.getElementById("container").offsetHeight;
-var gwidth=document.getElementById("container").offsetWidth;
-var bheight=Math.ceil(gheight/25);
+
+//Initialize global variables to be called;
+let obstacleCount = 0;  //count for total obstacles randomly generated, user selected obstacle won't count;
+let innerGrid; //the 2d array grid to be used for pushing node objects;
+
+var gheight=document.getElementById("container").offsetHeight;  //take the horizontal and vertical pixels of
+var gwidth=document.getElementById("container").offsetWidth;    //the browser and make them be the factors of height
+var bheight=Math.ceil(gheight/25);                              //and width of the grid to be displayed.
 var bwidth=Math.ceil(gwidth/25);
 
-let startRow, startCol, endRow, endCol;
-let isStart;
-let isFinish;
-let mygrid;
+let startRow, startCol, endRow, endCol; //locate positions for start and end nodes to be tracked in algorithms.
+let isStart;    // boolean variables determining whether the start and finish node exist.
+let isFinish; 
+let mygrid;   //actual HTML grid to be displayed. 
+let startNode, endNode;  //Object nodes.
+
 
 class Node {
     constructor(id, nodeState, row, column) {
@@ -19,6 +24,7 @@ class Node {
        this.isVisited = false;
       this.distance = Infinity;
       this.previousNode = null;
+      
 
     }
 };
@@ -29,12 +35,11 @@ class grid {
   constructor(startNode,endNode){
   this.startNode = startNode;
   this.endNode = endNode;
+  this.shortestPath = []; 
   }
 }
 
-
-
-
+//get a random integer no bigger than cap;
 function getRandInt(cap){
    return Math.floor(Math.random() * cap);
 }
@@ -42,7 +47,7 @@ function getRandInt(cap){
 
 
 function gridGen(){
-    counter = 0;
+    obstacleCount = 0;
     innerGrid=[];
     
     let hasStart = false, hasFinish = false;
@@ -101,6 +106,7 @@ function gridGen(){
       return classGrid;  
     }
     classGrid = createClassGrid();
+    endNode = classGrid.endNode;
 
     tableHTML+="</tbody>";
     let mygrid = document.getElementById("mygrid");
@@ -144,18 +150,18 @@ function PlaceRandWall(){
     let row = Math.abs(getRandInt(bheight));
     let col = Math.abs(getRandInt(bwidth));
     let thisNode = document.getElementById(`row${row}_column${col}`);
-    if(counter<maxcount){
+    if(obstacleCount<maxcount){
         if(thisNode.className!="nodeStart"&&thisNode.className!="nodeFinish"){
         thisNode.className = "Obstacle";
         innerGrid[row][col].nodeState = "Obstacle";
         console.log("Change nodeState: innerGrid",row,col,"to",innerGrid[row][col].nodeState);
-        counter++;
+        obstacleCount++;
         }
         
     }
 
 }
-if(counter>=maxcount){
+if(obstacleCount>=maxcount){
   console.log("Max random obstacle count reached: ",maxcount);
   return window.alert("Max random obstacle count reached.");
 }
@@ -226,8 +232,6 @@ function dijkstras(){
   let visitedNodes =[];
   let shortestNode;
   
-  let endNode = classGrid.endNode;
-  
   
   let unvisited = getNodes(innerGrid);
   
@@ -292,36 +296,45 @@ function getUnvisitedNeighbors(node, innerGrid) {
   
 }
 
+let i; //shortestPath index obstacleCount;
+let shortestPath = []; 
 
 function getNodesInShortestPathOrder() {
  
-  let shortestPath = [];
-  let currentNode = classGrid.endNode;
  
-
+  let currentNode = endNode;
+  i = 0;
   while (currentNode != null) {
-    shortestPath.unshift(currentNode);
+    shortestPath.push(currentNode);
     currentNode = currentNode.previousNode;
   }
+  console.log(shortestPath);
 
+  setInterval(() => {
+    vP(shortestPath)
+  }, 100);
+}
+
+
+function clearBoard(){
+  shortestPath=[];
+  gridGen();
+}
+
+function vP(shortestPath){
   
-  let vP = ()=>{
-  for(let i = 0; i < shortestPath.length; i++){
-    let row = shortestPath[i].row;
-    let col = shortestPath[i].column;
-    
-   
-    let pathNode = document.getElementById(`row${row}_column${col}`);
-   
-    if(!(pathNode.className=="nodeFinish"||pathNode.className=="nodeStart"))
-    pathNode.className = "nodePath";
-    
+    if(i<shortestPath.length){
+      let row = shortestPath[i].row;
+      let col = shortestPath[i].column;
+      i++;
+      let pathNode = document.getElementById(`row${row}_column${col}`);
+        if(!(pathNode.className=="nodeFinish"||pathNode.className=="nodeStart"))
+        pathNode.className = "nodePath";
+      
     }
-    
-  }
-  setInterval(vP,1000);
-  } 
-  
+   
+}
+ 
    
 
 
