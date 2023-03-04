@@ -231,6 +231,7 @@ function dijkstras(){
   
   let visitedNodes =[];
   let shortestNode;
+  let index = 0;
   
   
   let unvisited = getNodes(innerGrid);
@@ -246,25 +247,28 @@ function dijkstras(){
     if(shortestNode.distance===Infinity) return visitedNodes;
     shortestNode.isVisited = true;
     visitedNodes.push(shortestNode);
+    
+    drawVisited(visitedNodes);
+  
+   
+   
     if (shortestNode === endNode)return visitedNodes;
     updateUnvisitedNeighbors(shortestNode, innerGrid);
-   
+    
   }
-  /*let unvisitedIDs = [];
-  for(let row = 0; row<bheight; row++){
-    for(let col =0; col< bwidth; col++){
-      let unvisitedID = `row${row}_column${col}`;
-      if(!(unvisitedID==currentNodeID||unvisitedID==endID)){
-        unvisitedIDs.push(unvisitedID);
-      }
-    }
-  }
- 
-  while(!unvisitedIDs.length){
 
-  }
-*/
+}
 
+function drawVisited(visitedNodes){
+  for(shortestNode of visitedNodes){
+    let row = shortestNode.row, col = shortestNode.column;
+    let visitedNodeOnGrid = document.getElementById(`row${row}_column${col}`);
+  if(!(visitedNodeOnGrid.className=="nodeStart"||visitedNodeOnGrid.className=="nodeFinish"))
+  visitedNodeOnGrid.className = "nodeVisited";
+  }
+  
+  
+  
 }
 
 
@@ -296,18 +300,19 @@ function getUnvisitedNeighbors(node, innerGrid) {
   
 }
 
-let i; //shortestPath index obstacleCount;
+//shortestPath(array)'s index counter;
+let i;
 let shortestPath = []; 
 
 function getNodesInShortestPathOrder() {
- 
+  
  
   let currentNode = endNode;
-  i = 0;
   while (currentNode != null) {
     shortestPath.push(currentNode);
     currentNode = currentNode.previousNode;
   }
+  i = shortestPath.length-1;
   console.log(shortestPath);
 
   setInterval(() => {
@@ -323,10 +328,10 @@ function clearBoard(){
 
 function vP(shortestPath){
   
-    if(i<shortestPath.length){
+    if(i>0){
       let row = shortestPath[i].row;
       let col = shortestPath[i].column;
-      i++;
+      i--;
       let pathNode = document.getElementById(`row${row}_column${col}`);
         if(!(pathNode.className=="nodeFinish"||pathNode.className=="nodeStart"))
         pathNode.className = "nodePath";

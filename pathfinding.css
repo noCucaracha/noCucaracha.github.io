@@ -1,8 +1,10 @@
+
+
 .node {
    
     width: 20px;
     height:20px;
-    outline: 1.5px solid rgb(66, 134, 186);
+    outline: 1.5px solid rgb(66, 154, 186);
     display:-ms-inline-grid;
     display:legacy;
     
@@ -12,18 +14,29 @@
   }
 
   .Obstacle{
-    background: black;
-    outline: 1.5px solid rgb(66, 134, 186);
+    background: rgb(241, 199, 241);
+    outline: 1.5px solid rgb(176, 3, 3);
     display:-ms-inline-grid;
     display:legacy;
+    border-radius:5px;
   }
 
   .nodePath{
-    background:rgb(118, 50, 166);
+    background:rgb(1, 243, 146);
   }
-
+  .nodeVisited{
+    background: skyblue;
+    opacity:0.9;
+    width: 20px;
+    height:20px;
+    outline: 1.5px solid rgb(2, 151, 201);
+    display:-ms-inline-grid;
+    display:legacy;
+    border-radius:5px;
+    
+  }
   .nodeFinish {
-    background: linear-gradient(135deg, red,pink,white,pink,red);
+    background: red;
     text-align: center;
     font-size: smaller;
     cursor: pointer;
@@ -37,7 +50,7 @@ user-select: none;
 
   
   .nodeStart {
-    background: linear-gradient(45deg,green,lightgreen,white,lightgreen,green);
+    background: green;
     text-align: center;
     font-size: smaller;
     cursor: pointer;
@@ -53,7 +66,7 @@ user-select: none;
   
 
   body{
-    background-color: aquamarine;
+    background-image: url('galaxy.jpg');
     margin:0;
     max-zoom:1.0;
     text-align: center;
@@ -63,7 +76,7 @@ user-select: none;
     overflow: hidden;
     align-items:center;
 }
-   
+
 div{
     margin:0 0 0;
     padding: 0%;
