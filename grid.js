@@ -1,6 +1,6 @@
 
 //Initialize global variables to be called;
-let obstacleCount = 0;  //count for total obstacles randomly generated, user selected obstacle won't count;
+let obstacleCount = 0;  //count used to limit maximum obstacles, user selected obstacle won't count;
 let innerGrid; //the 2d array grid to be used for pushing node objects;
 
 var gheight=document.getElementById("container").offsetHeight;  //take the horizontal and vertical pixels of
@@ -49,6 +49,7 @@ function getRandInt(cap){
 function gridGen(){
     obstacleCount = 0;
     innerGrid=[];
+    
     
     let hasStart = false, hasFinish = false;
     let rand1 = Math.abs(getRandInt(bheight));
@@ -213,18 +214,13 @@ function pfVisualizer(){
 }
 
 let ispaused = true;
+
 function triggerDijkstra(){
   
+
   dijkstras();
   
-  drawVisited(visitedNodes);
-
-  if(ispaused===false){
-    getNodesInShortestPathOrder();
-  }
-
-  
-   
+  drawVisited(visitedNodes,ispaused);
 
 }
 
@@ -244,7 +240,7 @@ function dijkstras(){
   
   visitedNodes =[];
   let shortestNode;
-  let index=0;
+
   
   let unvisited = getNodes(innerGrid);
   
@@ -258,7 +254,6 @@ function dijkstras(){
     if(shortestNode.distance===Infinity) return visitedNodes;
     shortestNode.isVisited = true;
     visitedNodes.push(shortestNode);
-    index++;
     if (shortestNode === endNode)return visitedNodes;
     updateUnvisitedNeighbors(shortestNode, innerGrid);    
   } 
@@ -267,7 +262,7 @@ function dijkstras(){
 }
 
 let vdex =0;
-function drawVisited(visitedNodes){
+function drawVisited(visitedNodes,ispaused){
   let vN=()=>{
     if(vdex<visitedNodes.length-1){
       let row = visitedNodes[vdex].row;
@@ -279,16 +274,25 @@ function drawVisited(visitedNodes){
     }
     else{
       ispaused=false;
-      console.log(ispaused);
+      if(!ispaused==true){
+        clearInterval(animationvN);
+        vdex=0;
+        return getNodesInShortestPathOrder();
+      }
+      
     }
   }
-  setInterval(() => {
+  const animationvN = setInterval(() => {
     vN();
-  }, 10);
+  }, 5);
+  animationvN;
+  
+
+  }
   
   
   
-}
+
 
 
 function sortUnvisited(unvisitedNodes){
@@ -324,7 +328,7 @@ let i;
 let shortestPath = []; 
 
 function getNodesInShortestPathOrder() {
-  
+ 
  
   let currentNode = endNode;
   while (currentNode != null) {
@@ -333,15 +337,18 @@ function getNodesInShortestPathOrder() {
   }
   i = shortestPath.length-1;
   console.log(shortestPath);
-
+const shortestAnimation =
   setInterval(() => {
     vP(shortestPath)
   }, 100);
+ shortestAnimation;
+
 }
 
 
 function clearBoard(){
   shortestPath=[];
+ 
   gridGen();
 }
 
