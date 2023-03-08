@@ -26,13 +26,10 @@
   }
   .nodeVisited{
     background: skyblue;
-    opacity:0.9;
+    outline: 1.5px solid rgb(55, 55, 55);
     width: 20px;
     height:20px;
-    outline: 1.5px solid rgb(2, 151, 201);
-    display:-ms-inline-grid;
-    display:legacy;
-    border-radius:5px;
+   
     
   }
   .nodeFinish {
@@ -127,7 +124,7 @@ div{
 
 #dropdown{
     position: relative;
-    display: inline-block;
+    display: block;
     cursor: pointer;
 }
 

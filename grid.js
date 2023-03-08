@@ -199,13 +199,12 @@ function pfVisualizer(){
           aStar();
             break;
         case "dijkstras":
-          dijkstras();
-          getNodesInShortestPathOrder();
-
+          triggerDijkstra();
+          
           break;
         default: 
-          dijkstras(); //testing;
-            //window.alert ("No Algorithm Selected"); 
+        
+            window.alert ("No Algorithm Selected"); 
             throw "No Algorithm Selected"; 
                
 
@@ -213,7 +212,21 @@ function pfVisualizer(){
    
 }
 
+let ispaused = true;
+function triggerDijkstra(){
+  
+  dijkstras();
+  
+  drawVisited(visitedNodes);
 
+  if(ispaused===false){
+    getNodesInShortestPathOrder();
+  }
+
+  
+   
+
+}
 
 function getNodes(innerGrid){
   let unvisited=[];
@@ -226,20 +239,18 @@ function getNodes(innerGrid){
 }
 
 
-
+let visitedNodes;
 function dijkstras(){
   
-  let visitedNodes =[];
+  visitedNodes =[];
   let shortestNode;
-  let index = 0;
-  
+  let index=0;
   
   let unvisited = getNodes(innerGrid);
   
  
   while (!!unvisited.length){
     
-   
     sortUnvisited(unvisited);
 
     shortestNode = unvisited.shift();
@@ -247,25 +258,33 @@ function dijkstras(){
     if(shortestNode.distance===Infinity) return visitedNodes;
     shortestNode.isVisited = true;
     visitedNodes.push(shortestNode);
-    
-    drawVisited(visitedNodes);
-  
-   
-   
+    index++;
     if (shortestNode === endNode)return visitedNodes;
-    updateUnvisitedNeighbors(shortestNode, innerGrid);
-    
-  }
-
+    updateUnvisitedNeighbors(shortestNode, innerGrid);    
+  } 
+  
+ 
 }
 
+let vdex =0;
 function drawVisited(visitedNodes){
-  for(shortestNode of visitedNodes){
-    let row = shortestNode.row, col = shortestNode.column;
-    let visitedNodeOnGrid = document.getElementById(`row${row}_column${col}`);
-  if(!(visitedNodeOnGrid.className=="nodeStart"||visitedNodeOnGrid.className=="nodeFinish"))
-  visitedNodeOnGrid.className = "nodeVisited";
+  let vN=()=>{
+    if(vdex<visitedNodes.length-1){
+      let row = visitedNodes[vdex].row;
+      let col = visitedNodes[vdex].column;
+      vdex++;
+      let visitedNodeOnGrid = document.getElementById(`row${row}_column${col}`);
+      if(!(visitedNodeOnGrid.className=="nodeStart"||visitedNodeOnGrid.className=="nodeFinish"||visitedNodeOnGrid.className=="Obstacle"))
+      visitedNodeOnGrid.className = "nodeVisited";
+    }
+    else{
+      ispaused=false;
+      console.log(ispaused);
+    }
   }
+  setInterval(() => {
+    vN();
+  }, 10);
   
   
   
