@@ -284,7 +284,7 @@ function drawVisited(visitedNodes,ispaused){
   }
   const animationvN = setInterval(() => {
     vN();
-  }, 5);
+  }, 10);
   animationvN;
   
 
@@ -340,7 +340,7 @@ function getNodesInShortestPathOrder() {
 const shortestAnimation =
   setInterval(() => {
     vP(shortestPath)
-  }, 100);
+  }, 200);
  shortestAnimation;
 
 }
