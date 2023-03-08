@@ -340,7 +340,7 @@ function getNodesInShortestPathOrder() {
 const shortestAnimation =
   setInterval(() => {
     vP(shortestPath)
-  }, 200);
+  }, 100);
  shortestAnimation;
 
 }
