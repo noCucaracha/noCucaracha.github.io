@@ -1,4 +1,56 @@
 
+function setStartFinish(){
+  for(let row = 0; row <bheight; row++){
+    for (let column = 0; column < bwidth; column++){
+    let mynode = document.getElementById(`row${row}_column${column}`);
+    let dragNode;
+    if (mynode.className ==="nodeStart"||mynode.className === "nodeFinish"){
+    
+    mynode.addEventListener("drag", function(e){
+      console.log(e,"Dragging",mynode.className);
+    });
+    mynode.addEventListener("dragstart", function(e){
+      dragNode = e.target;
+      e.target.classList.add("dragging");
+    });
+    mynode.addEventListener("dragend",function(e){
+      e.target.classList.remove("dragging");
+    });
+
+    }
+    else if(mynode.className==="node"){
+    mynode.addEventListener("dragover", function(event){
+      event.preventDefault();
+    },false);
+    mynode.addEventListener("drop", function (event){
+      event.preventDefault();
+      event.target.appendChild(dragNode);
+    });
+  }
+} 
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //Initialize global variables to be called;
 let obstacleCount = 0;  //count used to limit maximum obstacles, user selected obstacle won't count;
 let innerGrid; //the 2d array grid to be used for pushing node objects;
@@ -113,11 +165,6 @@ function gridGen(){
     let mygrid = document.getElementById("mygrid");
     mygrid.innerHTML=tableHTML;
 }
-
-
-gridGen();
-
-
 
 function makeWall (id){
   let node = document.getElementById(id);
@@ -367,7 +414,8 @@ function vP(shortestPath){
 }
  
    
-
+gridGen();
+setStartFinish();
 
 
 
