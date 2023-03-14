@@ -168,7 +168,7 @@ class Node {
        this.isVisited = false;
       this.distance = Infinity;
       this.previousNode = null;
-      this.f_cost = null;
+      this.gScore = Infinity;
       
 
     }
@@ -221,7 +221,7 @@ function gridGen(){
                 hasStart=true;
                 startRow = row;
                 startCol = column;
-               
+                newNode.gScore = 0;
                 newNode.distance = 0;
                 newNode.isVisited=true;
                 
