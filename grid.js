@@ -467,6 +467,9 @@ function getNodesInShortestPathOrder() {
   }
   i = shortestPath.length-1;
   console.log(shortestPath);
+  if(shortestPath.length===1){
+    window.alert("It seems like there isn't a path to the destination.")
+  }
 const shortestAnimation =
   setInterval(() => {
     vP(shortestPath)
@@ -515,6 +518,7 @@ function vP(shortestPath){
         pathNode.className = "nodePath";
       
     }
+    
    
 }
  
