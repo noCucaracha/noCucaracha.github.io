@@ -1,31 +1,89 @@
-
+let mouseDown = false;
+let nodeClassName;
+let targetID=null;
+let targetIsMoved = false;
 function setStartFinish(){
   for(let row = 0; row <bheight; row++){
     for (let column = 0; column < bwidth; column++){
     let mynode = document.getElementById(`row${row}_column${column}`);
-    let dragNode;
     if (mynode.className ==="nodeStart"||mynode.className === "nodeFinish"){
-    
-    mynode.addEventListener("drag", function(e){
-      console.log(e,"Dragging",mynode.className);
+    mynode.addEventListener("mousedown",function(e){
+      e.preventDefault();
+      mouseDown = true;
+      targetID = mynode.id;
+      nodeClassName = mynode.className;
+      console.log("Mouse down: ",mouseDown,"ID: ", targetID);
     });
-    mynode.addEventListener("dragstart", function(e){
-      dragNode = e.target;
-      e.target.classList.add("dragging");
-    });
-    mynode.addEventListener("dragend",function(e){
-      e.target.classList.remove("dragging");
-    });
-
     }
     else if(mynode.className==="node"){
-    mynode.addEventListener("dragover", function(event){
+      if(targetID===null){
+      mynode.addEventListener("mousedown", function(e){
+          e.preventDefault();
+          mouseDown = true;
+        });
+     
+        mynode.addEventListener("mousemove",function(e){
+          if(!(mynode.className==="nodeStart"||mynode.className==="nodeFinish")){
+            if (mouseDown ===true)
+            makeWall(e.target.id);
+          };
+        });
+      
+        mynode.addEventListener("mouseup",function(e){
+          e.preventDefault();
+          mouseDown = false;
+        });
+    };
+     
+
+
+
+    mynode.addEventListener("mouseover", function(event){
       event.preventDefault();
+      if(targetID!==null&&mouseDown===true){
+        mynode.addEventListener("mouseup",function(event){
+          event.preventDefault();
+          let sourceIdString = mynode.id.split("_"), targetIdString = targetID.split("_");
+          switch (nodeClassName){
+            case "nodeStart":
+              startRow = parseInt(sourceIdString[0].slice(3));
+              startCol = parseInt(sourceIdString[1].slice(6));
+              let startNode = innerGrid[startRow][startCol];
+              startNode.nodeState = nodeClassName;
+              startNode.isVisited = true;
+              startNode.distance = 0;
+              console.log(startNode);
+             break;
+            case "nodeFinish":
+              endRow = parseInt(sourceIdString[0].slice(3));
+              endCol = parseInt(sourceIdString[1].slice(6));
+             innerGrid[endRow][endCol].nodeState = nodeClassName;
+             console.log(innerGrid[endRow][endCol].nodeState);
+             break;
+            default:
+              throw "Not a start or finish node.";
+
+          }
+        
+         let row = parseInt(targetIdString[0].slice(3));
+         let col = parseInt(targetIdString[1].slice(6));
+         let thisNode = innerGrid[row][col];
+          thisNode.nodeState = "node";
+          thisNode.distance = Infinity;
+          thisNode.isVisited = false;
+          document.getElementById(targetID).className = "node";
+          mynode.className = nodeClassName;
+          console.log("Changed", nodeClassName, "from", targetID, "to", mynode.id);
+          targetIsMoved = true;
+          
+         
+          mouseDown = false;
+          targetID = null;
+          updateInnerGrid();
+        });
+      }
     },false);
-    mynode.addEventListener("drop", function (event){
-      event.preventDefault();
-      event.target.appendChild(dragNode);
-    });
+    
   }
 } 
 }
@@ -36,9 +94,15 @@ function setStartFinish(){
 
 
 
+function updateInnerGrid(){
 
+ let classGrid = createClassGrid();
+  startNode = classGrid.startNode;
+  endNode = classGrid.endNode;
+  innerGrid.endNode = endNode;
+  innerGrid.startNode = startNode;
 
-
+}
 
 
 
@@ -116,7 +180,7 @@ function gridGen(){
        let currentRowHTML=`<tr id="row${row}">`;
         for(let column = 0; column<bwidth; column++){
        
-            let nodeContent = " ";
+            
             let nodeID = `${row}-${column}`, nodeState="node";
             let newNode = new Node(nodeID, nodeState, row, column);
             newNode.isVisited = false;
@@ -128,7 +192,7 @@ function gridGen(){
                 hasStart=true;
                 startRow = row;
                 startCol = column;
-                nodeContent = "S";
+               
                 newNode.distance = 0;
                 newNode.isVisited=true;
                 
@@ -139,31 +203,33 @@ function gridGen(){
                 hasFinish=true; 
                 endRow = row;
                 endCol = column;
-                nodeContent = "F";
 
             
             }
         
             currentRow.push(newNode);
             
-            currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}" onclick="makeWall(id)">${nodeContent}</td>`;
+            currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}" ></td>`;
         }
         innerGrid.push(currentRow);
         tableHTML+=`${currentRowHTML}</tr>`;
     }
 
-    let createClassGrid=()=>{
-      let startNode = innerGrid[startRow][startCol];
-      let endNode = innerGrid[endRow][endCol];
-      let classGrid = new grid(startNode,endNode);  
-      return classGrid;  
-    }
-    classGrid = createClassGrid();
+    
+    let classGrid = createClassGrid();
     endNode = classGrid.endNode;
 
     tableHTML+="</tbody>";
     let mygrid = document.getElementById("mygrid");
     mygrid.innerHTML=tableHTML;
+
+}
+
+let createClassGrid=()=>{
+  let startNode = innerGrid[startRow][startCol];
+  let endNode = innerGrid[endRow][endCol];
+  let classGrid = new grid(startNode,endNode);  
+  return classGrid;  
 }
 
 function makeWall (id){
@@ -263,12 +329,15 @@ function pfVisualizer(){
 let ispaused = true;
 
 function triggerDijkstra(){
+ 
+  clearVisualized();
   
-
   dijkstras();
   
   drawVisited(visitedNodes,ispaused);
 
+
+  setStartFinish();
 }
 
 function getNodes(innerGrid){
@@ -285,7 +354,7 @@ function getNodes(innerGrid){
 let visitedNodes;
 function dijkstras(){
   
-  visitedNodes =[];
+  visitedNodes = [];
   let shortestNode;
 
   
@@ -394,9 +463,31 @@ const shortestAnimation =
 
 
 function clearBoard(){
-  shortestPath=[];
- 
+  
+  clearVisualized();
   gridGen();
+  setStartFinish();
+}
+
+function clearVisualized(){
+  
+  shortestPath=[];
+  for(let row = 0; row<bheight; row++){
+    for(let column = 0; column <bwidth; column++){
+      let node = document.getElementById(`row${row}_column${column}`);
+      if (!(node.className ==="nodeStart"||node.className==="nodeFinish")){
+        let objectNode = innerGrid[row][column];
+        objectNode.isVisited=false;
+        objectNode.distance=Infinity;
+        objectNode.previousNode=null;
+        node.className = "node";
+      }
+      
+    }
+  }
+  visitedNodes=[];
+  unvisited=[];
+  
 }
 
 function vP(shortestPath){
@@ -416,6 +507,5 @@ function vP(shortestPath){
    
 gridGen();
 setStartFinish();
-
 
 
