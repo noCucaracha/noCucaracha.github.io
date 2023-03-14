@@ -475,7 +475,7 @@ function clearVisualized(){
   for(let row = 0; row<bheight; row++){
     for(let column = 0; column <bwidth; column++){
       let node = document.getElementById(`row${row}_column${column}`);
-      if (!(node.className ==="nodeStart"||node.className==="nodeFinish")){
+      if (!(node.className ==="nodeStart"||node.className==="nodeFinish"||node.className==="Obstacle")){
         let objectNode = innerGrid[row][column];
         objectNode.isVisited=false;
         objectNode.distance=Infinity;
