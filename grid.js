@@ -64,13 +64,13 @@ function setStartFinish(){
               startNode.nodeState = nodeClassName;
               startNode.isVisited = true;
               startNode.distance = 0;
-              console.log(startNode);
+              
              break;
             case "nodeFinish":
               endRow = parseInt(sourceIdString[0].slice(3));
               endCol = parseInt(sourceIdString[1].slice(6));
              innerGrid[endRow][endCol].nodeState = nodeClassName;
-             console.log(innerGrid[endRow][endCol].nodeState);
+             
              break;
             default:
               throw "Not a start or finish node.";
