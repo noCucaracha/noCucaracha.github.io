@@ -1,3 +1,15 @@
+let textHovered=(id)=>{
+  document.getElementById(id).style.color = "lightgreen";
+  document.getElementById(id).addEventListener("mousedown",function(){
+    document.getElementById(id).style.color = "lightblue";
+  });
+  document.getElementById(id).addEventListener("mouseout",function(){
+    document.getElementById(id).style.color = "white";
+  })
+
+}
+
+
 let mouseDown = false;
 let nodeClassName;
 let targetID=null;
@@ -305,12 +317,18 @@ function aStar(){
 
 let tempAlgo;
 function algSelector(algorithm){
+  
     switch(algorithm){
         case "aStar":
         tempAlgo =  "aStar"; 
+        document.getElementById("onAlgoSelect").innerHTML = "Algorithm: A*";
+        document.getElementById("onAlgoSelect").style.color = "lightpink";
+        
         break;
         case "dijkstras":
         tempAlgo =  "dijkstras";
+        document.getElementById("onAlgoSelect").innerHTML = "Algorithm: Dijkstra's";
+        document.getElementById("onAlgoSelect").style.color = "lightpink";
         break;   
         default: 
           throw "Please select an algorithm."

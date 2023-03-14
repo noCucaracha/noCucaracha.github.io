@@ -17,18 +17,18 @@
         <div class="navBar">
             
                 <div id = "dropdown" class="navOption" >
-                    <span>Algorithms</span>
+                    <span id = "onAlgoSelect" onmouseover="textHovered(id)">Algorithms</span>
                     <div id="algorithm">
                         <div class="dropdownBorder" onclick="algSelector('aStar')">A*</div>
                         <div class="dropdownBorder" onclick="algSelector('dijkstras')">Dijkstras'</div>
                     </div>
 
                 </div>
-                <div class="navOption" onclick="PlaceRandWall()">Place Random Blocks</div>
-                <div class="navOption" onclick="pfVisualizer()">Start</div>
-                <div class="navOption" onclick="clearBoard()">Reload Grid</div>
+                <div class="navOption" onclick="PlaceRandWall()" id="randGen" onmouseover="textHovered(id)">Place Random Blocks</div>
+                <div class="navOption" onclick="pfVisualizer()" id="vsStart"onmouseover="textHovered(id)">Start</div>
+                <div class="navOption" onclick="clearBoard()" id="reload" onmouseover="textHovered(id)">Reload Grid</div>
                 <div id="dropdown" class="navOption">
-                    <span>About This Project</span>
+                    <span id="projDescri" onmouseover="textHovered(id)">About This Project</span>
                     <p id="algorithm" class="dropdownBorder" style="width:94%; text-align: left;">
                         >>This project visualizes the A* and Dijkstras' path finding process. </br>
                         >>To play around with it, place wall blocks as you wish, select an algorithm, 
