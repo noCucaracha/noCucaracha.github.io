@@ -1,3 +1,5 @@
+
+
 let textHovered=(id)=>{
   document.getElementById(id).style.color = "lightgreen";
   document.getElementById(id).addEventListener("mousedown",function(){
@@ -166,6 +168,7 @@ class Node {
        this.isVisited = false;
       this.distance = Infinity;
       this.previousNode = null;
+      this.f_cost = null;
       
 
     }
@@ -308,12 +311,6 @@ if(obstacleCount>=maxcount){
 }
 
 
-
-function aStar(){
-
-
-
-}
 
 let tempAlgo;
 function algSelector(algorithm){
