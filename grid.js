@@ -1,7 +1,7 @@
 let mouseDown = false;
 let nodeClassName;
 let targetID=null;
-let targetIsMoved = false;
+let targetSelected = false;
 function setStartFinish(){
   for(let row = 0; row <bheight; row++){
     for (let column = 0; column < bwidth; column++){
@@ -12,37 +12,49 @@ function setStartFinish(){
       mouseDown = true;
       targetID = mynode.id;
       nodeClassName = mynode.className;
-      console.log("Mouse down: ",mouseDown,"ID: ", targetID);
+      targetSelected = true;
+      console.log("Mouse down: ",mouseDown,"ID: ", targetID,"Target is selected:", targetSelected);
     });
+    mynode.addEventListener("mouseup",function(){
+      e.preventDefault();
+      targetSelected = false;
+      mouseDown = false;
+    })
     }
     else if(mynode.className==="node"){
-      if(targetID===null){
-      mynode.addEventListener("mousedown", function(e){
+      
+        mynode.addEventListener("mousedown", function(e){
           e.preventDefault();
           mouseDown = true;
         });
-     
-        mynode.addEventListener("mousemove",function(e){
-          if(!(mynode.className==="nodeStart"||mynode.className==="nodeFinish")){
-            if (mouseDown ===true)
+    
+        mynode.addEventListener("mouseover",function(e){
+          if(targetSelected===false){
+            if (mouseDown === true)
             makeWall(e.target.id);
-          };
-        });
+          }
+            
+          
+        },false);
+      
       
         mynode.addEventListener("mouseup",function(e){
           e.preventDefault();
           mouseDown = false;
+          targetSelected = false;
+          console.log("target is selected: ",targetSelected);
         });
-    };
+    
      
-
-
-
+        
     mynode.addEventListener("mouseover", function(event){
       event.preventDefault();
-      if(targetID!==null&&mouseDown===true){
+      if(targetSelected===true){
         mynode.addEventListener("mouseup",function(event){
+          
           event.preventDefault();
+      
+          
           let sourceIdString = mynode.id.split("_"), targetIdString = targetID.split("_");
           switch (nodeClassName){
             case "nodeStart":
@@ -74,19 +86,21 @@ function setStartFinish(){
           document.getElementById(targetID).className = "node";
           mynode.className = nodeClassName;
           console.log("Changed", nodeClassName, "from", targetID, "to", mynode.id);
-          targetIsMoved = true;
+        
           
-         
+          targetSelected=false;
           mouseDown = false;
           targetID = null;
           updateInnerGrid();
+          setStartFinish();
         });
       }
     },false);
-    
+  
   }
 } 
 }
+
 }
 
 
