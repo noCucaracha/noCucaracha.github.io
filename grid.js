@@ -1,5 +1,4 @@
 
-
 let textHovered=(id)=>{
   document.getElementById(id).style.color = "lightgreen";
   document.getElementById(id).addEventListener("mousedown",function(){
@@ -31,6 +30,7 @@ function setStartFinish(){
     });
     mynode.addEventListener("mouseup",function(){
       e.preventDefault();
+
       targetSelected = false;
       mouseDown = false;
     })
@@ -169,7 +169,7 @@ class Node {
       this.distance = Infinity;
       this.previousNode = null;
       this.gScore = Infinity;
-      
+      this.fScore = Infinity;
 
     }
 };
@@ -238,7 +238,7 @@ function gridGen(){
         
             currentRow.push(newNode);
             
-            currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}" ></td>`;
+            currentRowHTML+=`<td id="row${row}_column${column}" class="${nodeState}" onclick="makeWall(id)" ></td>`;
         }
         innerGrid.push(currentRow);
         tableHTML+=`${currentRowHTML}</tr>`;
@@ -246,6 +246,7 @@ function gridGen(){
 
     
     let classGrid = createClassGrid();
+    startNode = classGrid.startNode;
     endNode = classGrid.endNode;
 
     tableHTML+="</tbody>";
@@ -339,7 +340,7 @@ function pfVisualizer(){
         case "":
             break;
         case "aStar":
-          aStar();
+          triggerAStar();
             break;
         case "dijkstras":
           triggerDijkstra();
@@ -356,7 +357,12 @@ function pfVisualizer(){
 }
 
 let ispaused = true;
-
+function triggerAStar(){
+  clearVisualized();
+  aStar();
+ //drawClosed(closedNodes);
+  setStartFinish();
+}
 function triggerDijkstra(){
  
   clearVisualized();
@@ -504,6 +510,7 @@ function clearBoard(){
 function clearVisualized(){
   
   shortestPath=[];
+  closedNodes=[];
   for(let row = 0; row<bheight; row++){
     for(let column = 0; column <bwidth; column++){
       let node = document.getElementById(`row${row}_column${column}`);
@@ -512,6 +519,8 @@ function clearVisualized(){
         objectNode.isVisited=false;
         objectNode.distance=Infinity;
         objectNode.previousNode=null;
+        objectNode.gScore=Infinity;
+        objectNode.fScore=Infinity;
         node.className = "node";
       }
       
@@ -542,3 +551,109 @@ gridGen();
 setStartFinish();
 
 
+
+let closedNodes;
+
+function aStar(){
+ 
+  let openNodes=[];
+  closedNodes=[];
+  let currentNode;
+  startNode.fScore=getFscore(startNode,endNode);
+  openNodes.push(startNode);
+  while(openNodes.length>0){
+    currentNode = openNodes.sort(((a,b)=>a.fScore - b.fScore)).shift();
+    closedNodes.push(currentNode);
+    if(currentNode===endNode){
+      console.log(closedNodes);
+      return drawClosed(closedNodes);
+    }
+    if(getCurrentNodeClass(currentNode)==="Obstacle") continue;
+    
+      let neighbors = getNeighbors(currentNode);
+      
+      for (let i in neighbors){
+        let newGScore = currentNode.gScore + getNeighborDistance(currentNode,neighbors[i]);
+        if(newGScore<neighbors[i].gScore){
+          neighbors[i].gScore = newGScore;
+          neighbors[i].fScore = getFscore(neighbors[i],endNode);
+          if(openNodes.includes(neighbors[i])===false)
+           openNodes.push(neighbors[i]);
+        }
+      
+      }
+   /* for each neighbour of current
+        new_gscore = current.gscore + distance(current,neighbour)
+        if new_gscore < neighbour.gscore
+          neighbour.gscore = new_gscore
+          neighbour.fscore = new_gscore + estimated_distance(neighbour， goal)
+            if neighbour not in open:
+            open. add(neighbour)
+  */
+}
+  
+function getCurrentNodeClass(currentNode){
+  let row = currentNode.row, col = currentNode.column;
+  let nodeClass = document.getElementById(`row${row}_column${col}`).className;
+  return nodeClass;
+}
+}
+function getNeighbors(node){
+  let neighbors = [];
+  let row = node.row, col = node.column;
+
+  if (row > 0) neighbors.push(innerGrid[row - 1][col]);
+  if (row < bheight - 1) neighbors.push(innerGrid[row + 1][col]);
+  if (col > 0) neighbors.push(innerGrid[row][col - 1]);
+  if (col < bwidth - 1) neighbors.push(innerGrid[row][col + 1]);
+
+//diagonal nodes:
+  if(row>1&&col<bwidth-1)
+  neighbors.push(innerGrid[row-1][col+1]);
+  if(row>1&&col>1)
+  neighbors.push(innerGrid[row-1][col-1]);
+  if(row<bheight-1&&col<bwidth-1)
+  neighbors.push(innerGrid[row+1][col+1]);
+  if(row<bheight-1&&col>1)
+  neighbors.push(innerGrid[row+1][col-1]);
+
+  return neighbors;
+}
+
+function getNeighborDistance(node,neighbor){
+  let distanceToNeighbor = 
+  Math.sqrt(
+    (Math.pow(Math.abs(parseInt(neighbor.row)-parseInt(node.row)),2))
+    +
+    (Math.pow(Math.abs(parseInt(neighbor.column)-parseInt(node.column)),2))
+  );
+
+  return distanceToNeighbor;
+}
+
+
+function getFscore(node,endNode){
+  let distanceToEnd = 
+    Math.sqrt(
+      (Math.pow(Math.abs(parseInt(endNode.row)-parseInt(node.row)),2))
+      +
+      (Math.pow(Math.abs(parseInt(endNode.column)-parseInt(node.column)),2))
+  );
+
+  let fScore = node.gScore + distanceToEnd;
+  
+  return fScore;
+} 
+
+
+
+function drawClosed(closedNodes){
+  for(let i = 0; i<closedNodes.length-1;i++){
+    let row = closedNodes[i].row;
+    let col = closedNodes[i].column;
+    let nodeOnGrid = document.getElementById(`row${row}_column${col}`);
+    if(!(nodeOnGrid.className=="nodeStart"||nodeOnGrid.className=="nodeFinish"||nodeOnGrid.className=="Obstacle"))
+      nodeOnGrid.className = "nodeVisited";    
+  }
+ 
+}
