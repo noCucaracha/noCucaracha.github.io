@@ -2,8 +2,8 @@
 
 .node {
    
-    width: 20px;
-    height:20px;
+    width: 15px;
+    height:15px;
     outline: 1.5px solid rgb(66, 154, 186);
     display:-ms-inline-grid;
     display:legacy;
@@ -27,8 +27,8 @@
   .nodeVisited{
     background: skyblue;
     outline: 1.5px solid rgb(55, 55, 55);
-    width: 20px;
-    height:20px;
+    width: 15px;
+    height: 15px;
    
     
   }

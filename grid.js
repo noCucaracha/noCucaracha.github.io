@@ -149,8 +149,8 @@ let innerGrid; //the 2d array grid to be used for pushing node objects;
 
 var gheight=document.getElementById("container").offsetHeight;  //take the horizontal and vertical pixels of
 var gwidth=document.getElementById("container").offsetWidth;    //the browser and make them be the factors of height
-var bheight=Math.ceil(gheight/25);                              //and width of the grid to be displayed.
-var bwidth=Math.ceil(gwidth/25);
+var bheight=Math.ceil(gheight/20);                              //and width of the grid to be displayed.
+var bwidth=Math.ceil(gwidth/20);
 
 let startRow, startCol, endRow, endCol; //locate positions for start and end nodes to be tracked in algorithms.
 let isStart;    // boolean variables determining whether the start and finish node exist.
@@ -360,7 +360,7 @@ let ispaused = true;
 function triggerAStar(){
   clearVisualized();
   aStar();
- //drawClosed(closedNodes);
+  getAStarPath();
   setStartFinish();
 }
 function triggerDijkstra(){
@@ -510,7 +510,6 @@ function clearBoard(){
 function clearVisualized(){
   
   shortestPath=[];
-  closedNodes=[];
   for(let row = 0; row<bheight; row++){
     for(let column = 0; column <bwidth; column++){
       let node = document.getElementById(`row${row}_column${column}`);
@@ -528,6 +527,7 @@ function clearVisualized(){
   }
   visitedNodes=[];
   unvisited=[];
+ 
   
 }
 
@@ -552,11 +552,11 @@ setStartFinish();
 
 
 
-let closedNodes;
+let openNodes, closedNodes;
 
 function aStar(){
  
-  let openNodes=[];
+  openNodes=[];
   closedNodes=[];
   let currentNode;
   startNode.fScore=getFscore(startNode,endNode);
@@ -569,7 +569,7 @@ function aStar(){
       return drawClosed(closedNodes);
     }
     if(getCurrentNodeClass(currentNode)==="Obstacle") continue;
-    
+
       let neighbors = getNeighbors(currentNode);
       
       for (let i in neighbors){
@@ -578,7 +578,10 @@ function aStar(){
           neighbors[i].gScore = newGScore;
           neighbors[i].fScore = getFscore(neighbors[i],endNode);
           if(openNodes.includes(neighbors[i])===false)
-           openNodes.push(neighbors[i]);
+          neighbors[i].previousNode=currentNode;
+          openNodes.push(neighbors[i]);
+           
+           
         }
       
       }
@@ -653,7 +656,26 @@ function drawClosed(closedNodes){
     let col = closedNodes[i].column;
     let nodeOnGrid = document.getElementById(`row${row}_column${col}`);
     if(!(nodeOnGrid.className=="nodeStart"||nodeOnGrid.className=="nodeFinish"||nodeOnGrid.className=="Obstacle"))
-      nodeOnGrid.className = "nodeVisited";    
+      nodeOnGrid.className = "nodeVisited";   
   }
- 
+  
+}
+
+function getAStarPath(){
+  let currentNode = endNode;
+  while(currentNode!=null){
+  shortestPath.push(currentNode);
+  currentNode = currentNode.previousNode;
+  }
+  console.log(shortestPath);
+  
+  for(let i=0;i<shortestPath.length-1;i++){
+    let row = shortestPath[i].row;
+    let col = shortestPath[i].column;
+      
+      let pathNode = document.getElementById(`row${row}_column${col}`);
+        if(!(pathNode.className=="nodeFinish"||pathNode.className=="nodeStart"))
+        pathNode.className = "nodePath";
+  }
+  
 }
