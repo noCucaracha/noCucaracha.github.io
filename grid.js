@@ -546,9 +546,7 @@ function vP(shortestPath){
    
 }
  
-   
-gridGen();
-setStartFinish();
+
 
 
 
@@ -679,3 +677,11 @@ function getAStarPath(){
   }
   
 }
+
+
+
+
+
+   
+gridGen();
+setStartFinish();
