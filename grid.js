@@ -77,6 +77,9 @@ function setStartFinish(){
               let startNode = innerGrid[startRow][startCol];
               startNode.nodeState = nodeClassName;
               startNode.isVisited = true;
+              startNode.gScore = 0;
+              startNode.previousNode = null;
+              
               startNode.distance = 0;
               
              break;
@@ -97,6 +100,9 @@ function setStartFinish(){
           thisNode.nodeState = "node";
           thisNode.distance = Infinity;
           thisNode.isVisited = false;
+          thisNode.fScore = Infinity;
+          thisNode.gScore = Infinity;
+          thisNode.previousNode = null;
           document.getElementById(targetID).className = "node";
           mynode.className = nodeClassName;
           console.log("Changed", nodeClassName, "from", targetID, "to", mynode.id);
@@ -359,6 +365,8 @@ function pfVisualizer(){
 let ispaused = true;
 function triggerAStar(){
   clearVisualized();
+  setStartFinish();
+
   aStar();
   getAStarPath();
   setStartFinish();
@@ -527,6 +535,8 @@ function clearVisualized(){
   }
   visitedNodes=[];
   unvisited=[];
+  openNodes=[];
+  closedNodes=[];
  
   
 }
@@ -556,15 +566,18 @@ function aStar(){
  
   openNodes=[];
   closedNodes=[];
-  let currentNode;
+  
   startNode.fScore=getFscore(startNode,endNode);
+  let currentNode = null;
   openNodes.push(startNode);
   while(openNodes.length>0){
     currentNode = openNodes.sort(((a,b)=>a.fScore - b.fScore)).shift();
     closedNodes.push(currentNode);
     if(currentNode===endNode){
       console.log(closedNodes);
-      return drawClosed(closedNodes);
+      return  drawClosed(closedNodes);
+     
+      
     }
     if(getCurrentNodeClass(currentNode)==="Obstacle") continue;
 
