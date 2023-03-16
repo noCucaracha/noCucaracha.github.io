@@ -155,8 +155,8 @@ let innerGrid; //the 2d array grid to be used for pushing node objects;
 
 var gheight=document.getElementById("container").offsetHeight;  //take the horizontal and vertical pixels of
 var gwidth=document.getElementById("container").offsetWidth;    //the browser and make them be the factors of height
-var bheight=Math.ceil(gheight/20);                              //and width of the grid to be displayed.
-var bwidth=Math.ceil(gwidth/20);
+var bheight=Math.ceil(gheight/25);                              //and width of the grid to be displayed.
+var bwidth=Math.ceil(gwidth/25);
 
 let startRow, startCol, endRow, endCol; //locate positions for start and end nodes to be tracked in algorithms.
 let isStart;    // boolean variables determining whether the start and finish node exist.
@@ -368,7 +368,7 @@ function triggerAStar(){
   setStartFinish();
 
   aStar();
-  getAStarPath();
+ 
   setStartFinish();
 }
 function triggerDijkstra(){
@@ -443,7 +443,7 @@ function drawVisited(visitedNodes,ispaused){
   }
   const animationvN = setInterval(() => {
     vN();
-  }, 10);
+  }, 20);
   animationvN;
   
 
@@ -661,16 +661,33 @@ function getFscore(node,endNode){
 
 
 
-function drawClosed(closedNodes){
-  for(let i = 0; i<closedNodes.length-1;i++){
-    let row = closedNodes[i].row;
-    let col = closedNodes[i].column;
-    let nodeOnGrid = document.getElementById(`row${row}_column${col}`);
-    if(!(nodeOnGrid.className=="nodeStart"||nodeOnGrid.className=="nodeFinish"||nodeOnGrid.className=="Obstacle"))
-      nodeOnGrid.className = "nodeVisited";   
+function drawClosed(closedNodes,ispaused){
+  let vN=()=>{
+    if(vdex<closedNodes.length-1){
+      let row = closedNodes[vdex].row;
+      let col = closedNodes[vdex].column;
+      vdex++;
+      let visitedNodeOnGrid = document.getElementById(`row${row}_column${col}`);
+      if(!(visitedNodeOnGrid.className=="nodeStart"||visitedNodeOnGrid.className=="nodeFinish"||visitedNodeOnGrid.className=="Obstacle"))
+      visitedNodeOnGrid.className = "nodeVisited";
+    }
+    else{
+      ispaused=false;
+      if(!ispaused==true){
+        clearInterval(animationvN);
+        vdex=0;
+        return getNodesInShortestPathOrder();
+      }
+      
+    }
   }
-  
+  const animationvN = setInterval(() => {
+    vN();
+  }, 20);
+  animationvN;
+   
 }
+
 
 function getAStarPath(){
   let currentNode = endNode;
