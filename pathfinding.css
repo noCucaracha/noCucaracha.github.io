@@ -24,8 +24,11 @@
   }
 
   .Obstacle{
-    background: rgb(241, 199, 241);
-    outline: 1.5px solid rgb(176, 3, 3);
+    background-color: transparent;
+    background-image: url('./icons/obstacle.png');
+    background-size:130%;
+    background-position: center;
+    outline: 1.5px solid rgb(77, 77, 77);
     display:-ms-inline-grid;
     display:legacy;
     border-radius:5px;
@@ -35,9 +38,9 @@
     background-size:90%;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url('./icons/shortestPath.jpg');
+    background-image: url('./icons/shortestPath.png');
     border-radius:40%;
-    background-color: gold;
+    background-color: rgb(241, 241, 241);
     animation-name: myPath;
     animation-duration: 1.2s;
   }
@@ -54,7 +57,11 @@
     
   }
   .nodeFinish {
-    background: red;
+    background-image: url('./icons/end.png');
+    background-size:90%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 15%;
     text-align: center;
     font-size: smaller;
     cursor: pointer;
@@ -64,6 +71,9 @@
 -ms-user-select: none;
 -o-user-select: none;
 user-select: none;
+animation-name:myFinish;
+animation-duration: 5s;
+animation-iteration-count: infinite;
   }
 
   
@@ -83,6 +93,9 @@ user-select: none;
 -ms-user-select: none;
 -o-user-select: none;
 user-select: none;
+border-radius: 15%;
+    animation-name:myStart;
+    animation-duration: 0.5s;
   }
  
   .dragging{
@@ -185,7 +198,7 @@ div{
   border: 2px solid black;
 }
 .dropdownBorder:hover{
-  background-color: rgb(110, 105, 105);
+  background-color: rgb(0, 255, 247);
 
 }
 
@@ -234,11 +247,18 @@ div{
 
 
 @keyframes myStart {
+  0%{
+    background-size: 70%;
+    background-color: rgb(179, 255, 2);
+    border-radius: 70%;
+  }
   
 }
 
-@keyframes myEnd {
-  
+@keyframes myFinish {
+  0%{background-color:rgb(255, 38, 0)}
+  50%{background-color:rgb(255, 103, 179)}
+  100%{background-color:rgb(255, 38, 0)}
 }
 
 @keyframes myObstacle {
@@ -273,12 +293,11 @@ div{
   0%{
     border-radius:100%;
     background-size: 60%;
-    background-color: rgb(131, 3, 80);
+    background-color: rgb(247, 6, 150);
   }
   50%{
     border-radius:70%;
     background-size: 80%;
-    background-color: rgb(176, 74, 11);
   }
   
 }

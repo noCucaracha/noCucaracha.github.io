@@ -1,13 +1,15 @@
 
 let textHovered=(id)=>{
   document.getElementById(id).style.color = "lightgreen";
-  document.getElementById(id).addEventListener("mousedown",function(){
+  document.getElementById(id).addEventListener("mousedown",function(e){
+    e.preventDefault();
     document.getElementById(id).style.color = "lightblue";
   });
-  document.getElementById(id).addEventListener("mouseout",function(){
+  document.getElementById(id).addEventListener("mouseout",function(e){
+    e.preventDefault();
     document.getElementById(id).style.color = "white";
-  })
-
+  });
+  
 }
 
 
