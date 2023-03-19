@@ -3,7 +3,7 @@
    
     width: 20px;
     height:20px;
-    outline: 1.5px solid;
+    outline: 1px solid;
     display:-ms-inline-grid;
     display:legacy;
     animation-name: myNode;
@@ -45,20 +45,19 @@
     border-radius:40%;
     background-color: rgb(241, 241, 241);
     animation-name: myPath;
-    animation-duration: 1.2s;
+    animation-duration: 1.5s;
   }
 
   .nodeVisited{
-    background-color: rgb(201, 69, 234);
-    outline: 1.5px solid rgb(48, 49, 45);
-    border-radius:20%;
+    background-color: rgb(155, 90, 219);
+    outline: 2px solid rgb(53, 53, 53);
+    border-radius: 10%;
     width: 20px;
     height: 20px;
     animation-name: myVisited;
     animation-duration: 1.5s;
-   
-    
   }
+
   .nodeFinish {
     background-image: url('./icons/end.png');
     background-size:90%;
@@ -108,8 +107,7 @@ border-radius: 15%;
 
   body{
     background-image: url('galaxy.jpg');
-    
-    
+    background-size:100%;
     margin:0;
     max-zoom:1.0;
     text-align: center;
@@ -276,17 +274,14 @@ div{
  
   0% {  
         outline-color: rgb(158, 25, 215);
-        background-color: goldenrod;
+        background-color: rgb(252, 239, 0);
         border-radius: 80%;
         outline-style:dashed;
         
       }
   30%{
-    
     outline-color: rgb(162, 44, 222);
     background-color: rgb(224, 72, 17);
-    border-radius: 60%;
-    outline-style:dotted;
   }
   60%{
         outline-color:rgb(33, 25, 24);
