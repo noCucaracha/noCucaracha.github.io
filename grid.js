@@ -327,8 +327,14 @@ function algSelector(algorithm){
         tempAlgo =  "aStar"; 
         document.getElementById("onAlgoSelect").innerHTML = "Algorithm: A*";
         document.getElementById("onAlgoSelect").style.color = "lightpink";
-        
         break;
+
+        case "aStarNoD":
+          tempAlgo =  "aStarNoD"; 
+          document.getElementById("onAlgoSelect").innerHTML = "Algorithm: A* (No Diags)";
+          document.getElementById("onAlgoSelect").style.color = "lightpink";
+          break;
+
         case "dijkstras":
         tempAlgo =  "dijkstras";
         document.getElementById("onAlgoSelect").innerHTML = "Algorithm: Dijkstra's";
@@ -346,11 +352,13 @@ function pfVisualizer(){
         case "":
             break;
         case "aStar":
-          triggerAStar();
+          triggerAStar(true);
             break;
+        case "aStarNoD":
+          triggerAStar(false);
+          break;
         case "dijkstras":
           triggerDijkstra();
-          
           break;
         default: 
         
@@ -363,11 +371,11 @@ function pfVisualizer(){
 }
 
 let ispaused = true;
-function triggerAStar(){
+function triggerAStar(diagonal){
   clearVisualized();
   setStartFinish();
 
-  aStar();
+  aStar(diagonal);
  
   setStartFinish();
 }
@@ -443,7 +451,7 @@ function drawVisited(visitedNodes,ispaused){
   }
   const animationvN = setInterval(() => {
     vN();
-  }, 20);
+  }, 30);
   animationvN;
   
 
@@ -502,7 +510,7 @@ function getNodesInShortestPathOrder() {
 const shortestAnimation =
   setInterval(() => {
     vP(shortestPath)
-  }, 100);
+  }, 150);
  shortestAnimation;
 
 }
@@ -562,7 +570,7 @@ function vP(shortestPath){
 
 let openNodes, closedNodes;
 
-function aStar(){
+function aStar(diagonal){
  
   openNodes=[];
   closedNodes=[];
@@ -581,7 +589,7 @@ function aStar(){
     }
     if(getCurrentNodeClass(currentNode)==="Obstacle") continue;
 
-      let neighbors = getNeighbors(currentNode);
+      let neighbors = getNeighbors(currentNode,diagonal);
       
       for (let i in neighbors){
         let newGScore = currentNode.gScore + getNeighborDistance(currentNode,neighbors[i]);
@@ -612,7 +620,7 @@ function getCurrentNodeClass(currentNode){
   return nodeClass;
 }
 }
-function getNeighbors(node){
+function getNeighbors(node,diagonal){
   let neighbors = [];
   let row = node.row, col = node.column;
 
@@ -622,6 +630,7 @@ function getNeighbors(node){
   if (col < bwidth - 1) neighbors.push(innerGrid[row][col + 1]);
 
 //diagonal nodes:
+if(diagonal===true){
   if(row>1&&col<bwidth-1)
   neighbors.push(innerGrid[row-1][col+1]);
   if(row>1&&col>1)
@@ -630,7 +639,7 @@ function getNeighbors(node){
   neighbors.push(innerGrid[row+1][col+1]);
   if(row<bheight-1&&col>1)
   neighbors.push(innerGrid[row+1][col-1]);
-
+}
   return neighbors;
 }
 
@@ -683,7 +692,7 @@ function drawClosed(closedNodes,ispaused){
   }
   const animationvN = setInterval(() => {
     vN();
-  }, 20);
+  }, 30);
   animationvN;
    
 }

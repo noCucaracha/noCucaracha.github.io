@@ -1,13 +1,23 @@
 
-
 .node {
    
     width: 20px;
     height:20px;
-    outline: 1.5px solid rgb(66, 154, 186);
+    outline: 1.5px solid;
     display:-ms-inline-grid;
     display:legacy;
-    
+    animation-name: myNode;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+   
+  }
+
+  @keyframes myNode {
+    0%{outline-color:rgb(72, 137, 202)}
+    25%{outline-color:rgb(79, 116, 202)}
+    50%{outline-color: rgb(43, 114, 135);}
+    75%{outline-color: rgb(96, 81, 210);}
+    100%{outline-color: rgb(72, 137, 202)}
   }
   .node:hover{
     cursor: default;
@@ -26,20 +36,20 @@
     background-repeat: no-repeat;
     background-position: center;
     background-image: url('./icons/shortestPath.jpg');
-    border-radius:30%;
+    border-radius:40%;
     background-color: gold;
     animation-name: myPath;
-    animation-duration: 1s;
+    animation-duration: 1.2s;
   }
 
   .nodeVisited{
-    background-color: #00b8ff;
-    outline: 1.5px solid rgb(40, 5, 53);
+    background-color: rgb(133, 42, 156);
+    outline: 1.5px solid rgb(48, 49, 45);
     border-radius:20%;
     width: 20px;
     height: 20px;
     animation-name: myVisited;
-    animation-duration: 2s;
+    animation-duration: 1.5s;
    
     
   }
@@ -82,6 +92,8 @@ user-select: none;
 
   body{
     background-image: url('galaxy.jpg');
+    
+    
     margin:0;
     max-zoom:1.0;
     text-align: center;
@@ -185,6 +197,8 @@ div{
 }
 
 
+
+
 @media screen and (min-width:720px) and (max-width: 980px){
   .navOption{
     font-size:16px;
@@ -233,35 +247,38 @@ div{
 
 @keyframes myVisited {
  
-  0% {  height: 19px;
-        width: 19px;
-        outline-color: black;
-        background-color: gold;
+  0% {  
+        outline-color: rgb(158, 25, 215);
+        background-color: goldenrod;
         border-radius: 80%;
         outline-style:dashed;
         
       }
+  30%{
+    
+    outline-color: rgb(162, 44, 222);
+    background-color: rgb(224, 72, 17);
+    border-radius: 60%;
+    outline-style:dotted;
+  }
+  60%{
+        outline-color:rgb(33, 25, 24);
+        background-color: rgb(245, 12, 51);
+  }
  
-  50% { height: 20px; width:20px;
-        outline-color: gold;
-        background-color: #00ffbf;
-        
-      }
-  100%{ height: 20px; width:20px;
-        outline-color:rgb(45, 9, 58);
-        background-color: #00b8ff;
-      }
  
 }
 
 @keyframes myPath {
   0%{
     border-radius:100%;
+    background-size: 60%;
+    background-color: rgb(131, 3, 80);
   }
   50%{
     border-radius:70%;
+    background-size: 80%;
+    background-color: rgb(176, 74, 11);
   }
-  100%{
-    border-radius:30%;
-  }
+  
 }
