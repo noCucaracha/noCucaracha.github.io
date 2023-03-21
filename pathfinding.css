@@ -347,7 +347,7 @@ background-repeat: no-repeat;
   visibility: hidden;
   border:2px groove white;
   opacity: 0.8;
-  background-image: linear-gradient(to bottom, rgb(224, 248, 242), rgb(57, 164, 214), rgb(51, 41, 198));
+  background-image: linear-gradient(to bottom , rgb(224, 248, 242), rgb(57, 164, 214) 50%, rgb(51, 41, 198));
   background-size: 100%;
   background-position: 50% 100%;
   
