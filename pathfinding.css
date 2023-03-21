@@ -335,3 +335,17 @@ background-repeat: no-repeat;
   }
   
 }
+
+
+
+#popup{
+  position:fixed;
+  height:20%;
+  width:40%;
+  margin-top:25%;
+  margin-left:25%;
+  visibility: hidden;
+  background-color:aqua;
+  border:2px groove white;
+  opacity: 0.8;
+}

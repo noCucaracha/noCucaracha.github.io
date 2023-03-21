@@ -30,7 +30,7 @@ function setStartFinish(){
       targetSelected = true;
       console.log("Mouse down: ",mouseDown,"ID: ", targetID,"Target is selected:", targetSelected);
     });
-    mynode.addEventListener("mouseup",function(){
+    mynode.addEventListener("mouseup",function(e){
       e.preventDefault();
 
       targetSelected = false;
@@ -375,7 +375,6 @@ function pfVisualizer(){
 let ispaused = true;
 function triggerAStar(diagonal){
   clearVisualized();
-  setStartFinish();
 
   aStar(diagonal);
  
@@ -446,6 +445,9 @@ function drawVisited(visitedNodes,ispaused){
       if(!ispaused==true){
         clearInterval(animationvN);
         vdex=0;
+        ispaused=true;
+        displayPopUp();
+
         return getNodesInShortestPathOrder();
       }
       
@@ -497,8 +499,9 @@ let i;
 let shortestPath = []; 
 
 function getNodesInShortestPathOrder() {
- 
- 
+  displayPopUp(); 
+}
+function myShortestPath(){
   let currentNode = endNode;
   while (currentNode != null) {
     shortestPath.push(currentNode);
@@ -514,7 +517,6 @@ const shortestAnimation =
     vP(shortestPath)
   }, 150);
  shortestAnimation;
-
 }
 
 
@@ -527,12 +529,12 @@ function clearBoard(){
 
 function clearVisualized(){
   
-  shortestPath=[];
+  
   for(let row = 0; row<bheight; row++){
     for(let column = 0; column <bwidth; column++){
       let node = document.getElementById(`row${row}_column${column}`);
-      if (!(node.className ==="nodeStart"||node.className==="nodeFinish"||node.className==="Obstacle")){
-        let objectNode = innerGrid[row][column];
+      let objectNode = innerGrid[row][column];
+      if (node.className ==="nodeVisited"||node.className === "nodePath"){
         objectNode.isVisited=false;
         objectNode.distance=Infinity;
         objectNode.previousNode=null;
@@ -540,13 +542,24 @@ function clearVisualized(){
         objectNode.fScore=Infinity;
         node.className = "node";
       }
+      if(node.className==="nodeStart"){
+        objectNode.distance=0;
+        objectNode.gScore=0;
+        objectNode.fScor=Infinity;
+        objectNode.isVisited=true;
+      }
+      if(node.className==="nodeFinish"){
+        objectNode.gScore=Infinity;
+        objectNode.fScor=Infinity;
+        objectNode.isVisited=false;
+        objectNode.previousNode=null;
+      }
       
     }
   }
   visitedNodes=[];
   unvisited=[];
-  openNodes=[];
-  closedNodes=[];
+  shortestPath=[];
  
   
 }
@@ -684,10 +697,13 @@ function drawClosed(closedNodes,ispaused){
     }
     else{
       ispaused=false;
-      if(!ispaused==true){
+      if(ispaused===false){
         clearInterval(animationvN);
         vdex=0;
+        ispaused=true;
+
         return getNodesInShortestPathOrder();
+        
       }
       
     }
@@ -723,6 +739,25 @@ function getAStarPath(){
 
 
 
+
+function displayPopUp(){
+
+ let popUp = document.getElementById("popup");
+  popUp.style.visibility="visible";
+  setTimeout(() => {
+    popUp.style.visibility="hidden";
+    return myShortestPath();
+  }, 1700);
+  document.getElementById("btnPopUp").addEventListener("click", function(e){
+    e.preventDefault();
+    ispaused=false;
+    popUp.style.visibility="hidden";
+    this.removeEventListener("click",function(e){});
+  })
+
+}
    
+
+
 gridGen();
 setStartFinish();
