@@ -25,15 +25,19 @@
                     </div>
 
                 </div>
-                <div class="navOption" onclick="PlaceRandWall()" id="randGen" onmouseover="textHovered(id)">Place Random Obstacles</div>
-                <div class="navOption" onclick="pfVisualizer()" id="vsStart"onmouseover="textHovered(id)">Start</div>
+                <div class="navOption" onclick="PlaceRandWall()" id="randGen" onmouseover="textHovered(id)"> Place Random Obstacles </div>
+                <div class="navOption" onclick="pfVisualizer()" id="vsStart"onmouseover="textHovered(id)"></div>
                 <div class="navOption" onclick="clearBoard()" id="reload" onmouseover="textHovered(id)">Reload Grid</div>
                 <div id="dropdown" class="navOption">
                     <span id="projDescri" onmouseover="textHovered(id)">About This Project</span>
                     <p id="algorithm" class="dropdownBorder" style="width:94%; text-align: left;">
                         >>This project visualizes the A* and Dijkstras' path finding process. </br>
-                        >>To play around with it, place wall blocks as you wish, select an algorithm, 
-                        choose a start and an end point on the grid then kick start the visualizer. </p>
+                        >>To play around with it, place obstacles as you wish, select an algorithm, 
+                        choose a start and an end point on the grid then kick start the visualizer. </br>
+                        *Obstacles:<img class = "Obstacle" style = "border:1.5px solid black;"></img></br>
+                        *Nodes visited: <img class = "nodeVisited" style="animation-iteration-count: infinite;"></img></br>
+                        *Shortest path node: <a><img class = "nodePath" style="animation-iteration-count: infinite;"></img></a></br>
+                    </p>
                 
                 
                 </div>

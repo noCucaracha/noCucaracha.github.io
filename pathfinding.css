@@ -28,6 +28,8 @@
     background-image: url('./icons/obstacle.png');
     background-position: center;
     background-size:190%;
+    height: 20px;
+    width: 20px;
 
     outline: 1.5px solid transparent;
     display:-ms-inline-grid;
@@ -38,12 +40,14 @@
   }
 
   .nodePath{
-    background-size:90%;
+    width:20px;
+    height: 20px;
+    background-size:94%;
     background-repeat: no-repeat;
     background-position: center;
     background-image: url('./icons/shortestPath.png');
     border-radius:40%;
-    background-color: rgb(241, 241, 241);
+    background-color: rgb(255, 255, 255);
     animation-name: myPath;
     animation-duration: 1.5s;
   }
@@ -100,14 +104,13 @@ border-radius: 15%;
     animation-duration: 0.5s;
   }
  
-  .dragging{
-    opacity: 0.6;
-  }
   
 
   body{
     background-image: url('galaxy.jpg');
-    background-size:100%;
+    background-size:120%;
+    background-repeat: no-repeat;
+    background-position-y: center;
     margin:0;
     max-zoom:1.0;
     text-align: center;
@@ -157,6 +160,7 @@ div{
   overflow:visible;
   color:aliceblue;
   width:20%;
+  height:4%;
   float:left;
   background-color: black;
   display:block;
@@ -172,6 +176,14 @@ div{
     cursor: pointer;
 }
 
+#vsStart{
+ background-image: url("./icons/naviStart.png");
+ background-size: 30%;
+ background-position: center;
+background-repeat: no-repeat;
+ 
+
+}
 
 #algorithm{
   display:none;
@@ -217,10 +229,20 @@ div{
   .navOption{
     font-size:16px;
   }
+  body{
+    background-size:240%;
+    background-repeat: no-repeat;
+    background-position-y: center;
+  }
 }
 @media screen and (min-width:530px) and (max-width: 720px){
   .navOption{
     font-size:12px;
+  }
+  body{
+    background-size:240%;
+    background-repeat: no-repeat;
+    background-position-y: center;
   }
 }
 @media screen and (min-width:360px) and (max-width:530px){
@@ -233,6 +255,11 @@ div{
   #title{
     font-size:20px;
   }
+  body{
+    background-size:300%;
+    background-repeat: no-repeat;
+    background-position-y: center;
+  }
 }
 @media only screen and (max-width:360px){
   .navOption{
@@ -241,6 +268,11 @@ div{
   }
   #title{
     font-size:14px;
+  }
+  body{
+    background-size:350%;
+    background-repeat: no-repeat;
+    background-position-y: center;
   }
 }
 
