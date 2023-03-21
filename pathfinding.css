@@ -342,10 +342,13 @@ background-repeat: no-repeat;
   position:fixed;
   height:20%;
   width:40%;
-  margin-top:25%;
+  margin-top:10%;
   margin-left:25%;
   visibility: hidden;
-  background-color:aqua;
   border:2px groove white;
   opacity: 0.8;
+  background-image: linear-gradient(to bottom, rgb(224, 248, 242), rgb(57, 164, 214), rgb(51, 41, 198));
+  background-size: 100%;
+  background-position: 50% 100%;
+  
 }

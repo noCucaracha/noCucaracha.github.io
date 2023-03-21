@@ -747,7 +747,7 @@ function displayPopUp(){
   setTimeout(() => {
     popUp.style.visibility="hidden";
     return myShortestPath();
-  }, 1700);
+  }, 2000);
   document.getElementById("btnPopUp").addEventListener("click", function(e){
     e.preventDefault();
     ispaused=false;
