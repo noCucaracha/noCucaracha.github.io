@@ -279,11 +279,12 @@ function makeWall (id){
   let col = parseInt(colString.slice(6));
 
 
-  if(node.className === "node"){
+  if(node.className === "node"||node.className ==="nodeVisited"||node.className==="nodePath"){
     node.className = "Obstacle";
     innerGrid[row][col].nodeState = "Obstacle";
+    
     console.log("Change nodeState: innerGrid",row,col,"to",innerGrid[row][col].nodeState);
-
+    console.log( innerGrid[row][col].gScore);
   }
   else {
     if(node.className === "Obstacle"){
@@ -544,7 +545,7 @@ function displayPopUp(){
   else if(shortestPath.length===1){
     document.getElementById("popTitle").innerHTML="It seems like there isn't a path to the destination.";
     document.getElementById("popDes").innerHTML = "Try again?";
-    popUp.addEventListener("click",clearVisualized);
+    popUp.addEventListener("click",clearBoard);
     return false;
   }
   else{
@@ -552,6 +553,7 @@ function displayPopUp(){
     document.getElementById("popDes").innerHTML = "Click anywhere to show";
     popUp.addEventListener("click",function(e){
       e.preventDefault();
+      if (closedNodes.includes(endNode)===true)
       showPath();
     })
     return true;
@@ -608,7 +610,8 @@ function clearVisualized(){
 }
 
 function vP(shortestPath){
-  
+
+ 
     if(i>0){
       let row = shortestPath[i].row;
       let col = shortestPath[i].column;
@@ -617,7 +620,7 @@ function vP(shortestPath){
         if(!(pathNode.className=="nodeFinish"||pathNode.className=="nodeStart"))
         pathNode.className = "nodePath";
     }
-    else return ispaused=true;
+  
     
 }
  
@@ -633,20 +636,16 @@ function aStar(diagonal){
   closedNodes=[];
   
   startNode.fScore=getFscore(startNode,endNode);
+
   let currentNode = null;
   openNodes.push(startNode);
-  
+  if(openNodes.length>=0){
   while(openNodes.length>0){
     currentNode = openNodes.sort(((a,b)=>a.fScore - b.fScore)).shift();
     closedNodes.push(currentNode);
-    if(currentNode===endNode){
-      
-      console.log(closedNodes);
-      
-      return  drawClosed(closedNodes);
-      
-    }
+    
    
+    
     if(getCurrentNodeClass(currentNode)==="Obstacle") continue;
 
       let neighbors = getNeighbors(currentNode,diagonal);
@@ -659,10 +658,22 @@ function aStar(diagonal){
           if(openNodes.includes(neighbors[i])===false)
           neighbors[i].previousNode=currentNode;
           openNodes.push(neighbors[i]);
+
         }
-      
-      
+        
       }
+      if(currentNode===endNode){
+      
+        console.log(closedNodes);
+        
+        return  drawClosed(closedNodes);
+        
+      }
+     
+    }
+    if(openNodes.length===0){
+      if (closedNodes.includes(endNode)===false) return drawClosed(closedNodes);
+    }
    /* for each neighbour of current
         new_gscore = current.gscore + distance(current,neighbour)
         if new_gscore < neighbour.gscore
@@ -672,6 +683,7 @@ function aStar(diagonal){
             open. add(neighbour)
   */
 }
+
   
 function getCurrentNodeClass(currentNode){
   let row = currentNode.row, col = currentNode.column;
@@ -762,6 +774,7 @@ function drawClosed(closedNodes,ispaused){
 
 
 function getAStarPath(){
+  
   let currentNode = endNode;
   while(currentNode!=null){
   shortestPath.push(currentNode);
@@ -777,6 +790,7 @@ function getAStarPath(){
         if(!(pathNode.className=="nodeFinish"||pathNode.className=="nodeStart"))
         pathNode.className = "nodePath";
   }
+
   
 }
 
