@@ -339,6 +339,7 @@ background-repeat: no-repeat;
 
 
 #popup{
+  
   position:fixed;
   height:20%;
   width:40%;
@@ -350,5 +351,9 @@ background-repeat: no-repeat;
   background-image: linear-gradient(to bottom , rgb(224, 248, 242), rgb(57, 164, 214) 50%, rgb(51, 41, 198));
   background-size: 100%;
   background-position: 50% 100%;
-  
+}
+#popDes{
+  cursor:pointer;
+  text-decoration: underline;
+  height:80%;
 }

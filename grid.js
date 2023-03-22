@@ -499,9 +499,7 @@ let i;
 let shortestPath = []; 
 
 function getNodesInShortestPathOrder() {
-  displayPopUp(); 
-}
-function myShortestPath(){
+  
   let currentNode = endNode;
   while (currentNode != null) {
     shortestPath.push(currentNode);
@@ -509,15 +507,60 @@ function myShortestPath(){
   }
   i = shortestPath.length-1;
   console.log(shortestPath);
-  if(shortestPath.length===1){
-    window.alert("It seems like there isn't a path to the destination.")
-  }
-const shortestAnimation =
-  setInterval(() => {
-    vP(shortestPath)
-  }, 150);
- shortestAnimation;
+ 
+    displayPopUp();
+  
+
 }
+
+
+
+
+
+function showPath(){
+ 
+const mypath  =  setInterval(()=>{
+  vP(shortestPath);
+  if(i===0){
+    clearInterval(mypath);
+    }
+}
+, 60); 
+
+
+}
+
+
+function displayPopUp(){
+ let popUp = document.getElementById("popup");
+  popUp.style.visibility="visible";
+  popUp.addEventListener("click",function(){
+    popUp.style.visibility="hidden";
+  })
+  if(shortestPath.length===2){
+    document.getElementById("popDes").innerHTML = "But... Isn't that too obvious...?";
+    return false;
+  }
+  else if(shortestPath.length===1){
+    document.getElementById("popTitle").innerHTML="It seems like there isn't a path to the destination.";
+    document.getElementById("popDes").innerHTML = "Try again?";
+    popUp.addEventListener("click",clearVisualized);
+    return false;
+  }
+  else{
+    document.getElementById("popTitle").innerHTML = "Shortest Path Found!";
+    document.getElementById("popDes").innerHTML = "Click anywhere to show";
+    popUp.addEventListener("click",function(e){
+      e.preventDefault();
+      showPath();
+    })
+    return true;
+    }
+
+}
+
+
+
 
 
 function clearBoard(){
@@ -528,7 +571,6 @@ function clearBoard(){
 }
 
 function clearVisualized(){
-  
   
   for(let row = 0; row<bheight; row++){
     for(let column = 0; column <bwidth; column++){
@@ -545,13 +587,14 @@ function clearVisualized(){
       if(node.className==="nodeStart"){
         objectNode.distance=0;
         objectNode.gScore=0;
-        objectNode.fScor=Infinity;
+        objectNode.fScore=Infinity;
         objectNode.isVisited=true;
       }
       if(node.className==="nodeFinish"){
         objectNode.gScore=Infinity;
-        objectNode.fScor=Infinity;
+        objectNode.fScore=Infinity;
         objectNode.isVisited=false;
+        objectNode.distance=Infinity;
         objectNode.previousNode=null;
       }
       
@@ -573,10 +616,9 @@ function vP(shortestPath){
       let pathNode = document.getElementById(`row${row}_column${col}`);
         if(!(pathNode.className=="nodeFinish"||pathNode.className=="nodeStart"))
         pathNode.className = "nodePath";
-      
     }
+    else return ispaused=true;
     
-   
 }
  
 
@@ -593,15 +635,18 @@ function aStar(diagonal){
   startNode.fScore=getFscore(startNode,endNode);
   let currentNode = null;
   openNodes.push(startNode);
+  
   while(openNodes.length>0){
     currentNode = openNodes.sort(((a,b)=>a.fScore - b.fScore)).shift();
     closedNodes.push(currentNode);
     if(currentNode===endNode){
+      
       console.log(closedNodes);
+      
       return  drawClosed(closedNodes);
-     
       
     }
+   
     if(getCurrentNodeClass(currentNode)==="Obstacle") continue;
 
       let neighbors = getNeighbors(currentNode,diagonal);
@@ -614,9 +659,8 @@ function aStar(diagonal){
           if(openNodes.includes(neighbors[i])===false)
           neighbors[i].previousNode=currentNode;
           openNodes.push(neighbors[i]);
-           
-           
         }
+      
       
       }
    /* for each neighbour of current
@@ -686,6 +730,7 @@ function getFscore(node,endNode){
 
 
 function drawClosed(closedNodes,ispaused){
+ 
   let vN=()=>{
     if(vdex<closedNodes.length-1){
       let row = closedNodes[vdex].row;
@@ -740,23 +785,7 @@ function getAStarPath(){
 
 
 
-function displayPopUp(){
 
- let popUp = document.getElementById("popup");
-  popUp.style.visibility="visible";
-  setTimeout(() => {
-    popUp.style.visibility="hidden";
-    return myShortestPath();
-  }, 2000);
-  document.getElementById("btnPopUp").addEventListener("click", function(e){
-    e.preventDefault();
-    ispaused=false;
-    popUp.style.visibility="hidden";
-    this.removeEventListener("click",function(e){});
-  })
-
-}
-   
 
 
 gridGen();
