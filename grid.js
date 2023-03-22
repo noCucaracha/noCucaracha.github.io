@@ -551,6 +551,7 @@ function displayPopUp(){
   else{
     document.getElementById("popTitle").innerHTML = "Shortest Path Found!";
     document.getElementById("popDes").innerHTML = "Click anywhere to show";
+    popUp.removeEventListener("click",clearBoard);
     popUp.addEventListener("click",function(e){
       e.preventDefault();
       if (closedNodes.includes(endNode)===true)
