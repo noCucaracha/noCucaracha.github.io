@@ -282,7 +282,8 @@ function makeWall (id){
   if(node.className === "node"||node.className ==="nodeVisited"||node.className==="nodePath"){
     node.className = "Obstacle";
     innerGrid[row][col].nodeState = "Obstacle";
-    
+    innerGrid[row][col].gScore = Infinity;
+    innerGrid[row][col].fScore = Infinity;
     console.log("Change nodeState: innerGrid",row,col,"to",innerGrid[row][col].nodeState);
     console.log( innerGrid[row][col].gScore);
   }
@@ -545,17 +546,18 @@ function displayPopUp(){
   else if(shortestPath.length===1){
     document.getElementById("popTitle").innerHTML="It seems like there isn't a path to the destination.";
     document.getElementById("popDes").innerHTML = "Try again?";
-    popUp.addEventListener("click",clearBoard);
+    popUp.addEventListener("click",clearVisualized);
     return false;
   }
   else{
     document.getElementById("popTitle").innerHTML = "Shortest Path Found!";
     document.getElementById("popDes").innerHTML = "Click anywhere to show";
-    popUp.removeEventListener("click",clearBoard);
+    popUp.removeEventListener("click",clearVisualized);
     popUp.addEventListener("click",function(e){
       e.preventDefault();
-      if (closedNodes.includes(endNode)===true)
+      
       showPath();
+      
     })
     return true;
     }
@@ -574,7 +576,7 @@ function clearBoard(){
 }
 
 function clearVisualized(){
-  
+
   for(let row = 0; row<bheight; row++){
     for(let column = 0; column <bwidth; column++){
       let node = document.getElementById(`row${row}_column${column}`);
@@ -586,12 +588,14 @@ function clearVisualized(){
         objectNode.gScore=Infinity;
         objectNode.fScore=Infinity;
         node.className = "node";
+        objectNode.nodeState = "node";
       }
       if(node.className==="nodeStart"){
         objectNode.distance=0;
         objectNode.gScore=0;
         objectNode.fScore=Infinity;
         objectNode.isVisited=true;
+        objectNode.nodeState="nodeStart";
       }
       if(node.className==="nodeFinish"){
         objectNode.gScore=Infinity;
@@ -599,13 +603,31 @@ function clearVisualized(){
         objectNode.isVisited=false;
         objectNode.distance=Infinity;
         objectNode.previousNode=null;
+        objectNode.nodeState="nodeFinish";
       }
+      if(node.className==="node"){
+        objectNode.gScore=Infinity;
+        objectNode.fScore=Infinity;
+        objectNode.isVisited=false;
+        objectNode.distance=Infinity;
+        objectNode.previousNode=null;
+      }
+      if(node.className==="Obstacle"){
+        objectNode.previousNode=null;
+        objectNode.distance=Infinity;
+       
+        objectNode.isVisited=false;
+        objectNode.nodeState="Obstacle";
+      }
+      
       
     }
   }
   visitedNodes=[];
   unvisited=[];
   shortestPath=[];
+  closedNodes=[];
+  openNodes=[];
  
   
 }
@@ -635,7 +657,6 @@ function aStar(diagonal){
  
   openNodes=[];
   closedNodes=[];
-  
   startNode.fScore=getFscore(startNode,endNode);
 
   let currentNode = null;
@@ -659,7 +680,6 @@ function aStar(diagonal){
           if(openNodes.includes(neighbors[i])===false)
           neighbors[i].previousNode=currentNode;
           openNodes.push(neighbors[i]);
-
         }
         
       }
@@ -688,7 +708,7 @@ function aStar(diagonal){
   
 function getCurrentNodeClass(currentNode){
   let row = currentNode.row, col = currentNode.column;
-  let nodeClass = document.getElementById(`row${row}_column${col}`).className;
+  let nodeClass = innerGrid[row][col].nodeState;
   return nodeClass;
 }
 }
