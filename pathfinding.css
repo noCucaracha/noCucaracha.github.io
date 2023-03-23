@@ -25,16 +25,16 @@
 
   .Obstacle{
     background-color: transparent;
+    border-radius:0px;
     background-image: url('./icons/obstacle.png');
     background-position: center;
-    background-size:190%;
+    background-size:240%;
     height: 20px;
     width: 20px;
 
-    outline: 1.5px solid transparent;
+    outline: 1.5px solid black;
     display:-ms-inline-grid;
     display:legacy;
-    border-radius:5px;
     animation-name:myObstacle;
     animation-duration: 0.5s;
   }

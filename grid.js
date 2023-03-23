@@ -74,6 +74,7 @@ function setStartFinish(){
           let sourceIdString = mynode.id.split("_"), targetIdString = targetID.split("_");
           switch (nodeClassName){
             case "nodeStart":
+              
               startRow = parseInt(sourceIdString[0].slice(3));
               startCol = parseInt(sourceIdString[1].slice(6));
               let startNode = innerGrid[startRow][startCol];
@@ -86,16 +87,17 @@ function setStartFinish(){
               
              break;
             case "nodeFinish":
+              
               endRow = parseInt(sourceIdString[0].slice(3));
               endCol = parseInt(sourceIdString[1].slice(6));
              innerGrid[endRow][endCol].nodeState = nodeClassName;
-             
+              
              break;
             default:
               throw "Not a start or finish node.";
 
           }
-        
+          if(!(event.target.className=="nodeFinish"||event.target.className=="nodeStart")){
          let row = parseInt(targetIdString[0].slice(3));
          let col = parseInt(targetIdString[1].slice(6));
          let thisNode = innerGrid[row][col];
@@ -108,7 +110,7 @@ function setStartFinish(){
           document.getElementById(targetID).className = "node";
           mynode.className = nodeClassName;
           console.log("Changed", nodeClassName, "from", targetID, "to", mynode.id);
-        
+          }
           
           targetSelected=false;
           mouseDown = false;
@@ -158,7 +160,7 @@ let innerGrid; //the 2d array grid to be used for pushing node objects;
 var gheight=document.getElementById("container").offsetHeight;  //take the horizontal and vertical pixels of
 var gwidth=document.getElementById("container").offsetWidth;    //the browser and make them be the factors of height
 var bheight=Math.ceil(gheight/25);                              //and width of the grid to be displayed.
-var bwidth=Math.ceil(gwidth/25);
+var bwidth=Math.ceil(gwidth/24);
 
 let startRow, startCol, endRow, endCol; //locate positions for start and end nodes to be tracked in algorithms.
 let isStart;    // boolean variables determining whether the start and finish node exist.
@@ -284,12 +286,14 @@ function makeWall (id){
     innerGrid[row][col].nodeState = "Obstacle";
     innerGrid[row][col].gScore = Infinity;
     innerGrid[row][col].fScore = Infinity;
+    innerGrid[row][col].isVisited = true;
     console.log("Change nodeState: innerGrid",row,col,"to",innerGrid[row][col].nodeState);
     console.log( innerGrid[row][col].gScore);
   }
   else {
     if(node.className === "Obstacle"){
       node.className = "node";
+      innerGrid[row][col].isVisited = false;
       innerGrid[row][col].nodeState = "node";
     console.log("Change nodeState: innerGrid",row,col,"to",innerGrid[row][col].nodeState);
     }
@@ -615,7 +619,6 @@ function clearVisualized(){
       if(node.className==="Obstacle"){
         objectNode.previousNode=null;
         objectNode.distance=Infinity;
-       
         objectNode.isVisited=false;
         objectNode.nodeState="Obstacle";
       }
@@ -825,3 +828,103 @@ function getAStarPath(){
 
 gridGen();
 setStartFinish();
+
+function mazeGen(){
+  
+  let currentNode = innerGrid[0][bwidth-1];
+  openNodes=[];
+  openNodes.push(currentNode);
+  let nodeVisited=false;
+
+  
+  while(openNodes.length>0){
+    currentNode = openNodes.shift();
+
+    console.log(currentNode);
+
+    let neighbors = getMazeNeighbors(currentNode);
+   
+    for(let neighbor = 0; neighbor<neighbors.length; neighbor++){   //needs some logical improves 
+      nodeVisited = true;
+      if (neighbors[neighbor].nodeState==="Obstacle") continue;
+      if(neighbors[neighbor].isVisited===false) {
+        nodeVisited = false;
+      }
+      if(nodeVisited===false) popNeighbor(currentNode,neighbors);
+    }
+   
+    
+    
+   
+}
+
+function popNeighbor(currentNode,neighbors){
+    openNodes.push(currentNode);
+
+      let randNeighbor = neighbors[Math.floor(Math.random()*(neighbors.length))];
+      console.log(randNeighbor);
+      let row = randNeighbor.row, col = randNeighbor.column;
+      makeWall(`row${row}_column${col}`);
+      randNeighbor.previousNode=currentNode;
+        
+      randNeighbor.isVisited = true;
+      openNodes.push(randNeighbor);
+      
+}
+
+
+clearVisualized();
+
+
+}
+
+
+function placeOrInvertWall(){
+  /* 
+  for(let row = 0; row <bheight-1; row++){
+    makeWall(`row${row}_column0`);
+    makeWall(`row${row}_column${bwidth-1}`);
+   }
+  for(let col = 0; col < bwidth-1; col++){
+    makeWall(`row0_column${col}`);
+    makeWall(`row${bheight-1}_column${col}`);
+  }
+ */
+for(let row = 0; row<bheight; row++){
+  for(let column = 0; column<bwidth; column++){
+    makeWall(`row${row}_column${column}`);
+  }
+}
+  clearVisualized();
+}
+
+function getMazeNeighbors(node) {
+  let neighbors = [];
+  let row = node.row;
+  let col = node.column;
+ 
+if (row > 0) neighbors.push(innerGrid[row - 1][col]);
+ // if (row>1)  neighbors.push(innerGrid[row - 2][col]);
+
+ if (row < bheight - 1) neighbors.push(innerGrid[row + 1][col]);
+ // if (row<bheight-2) neighbors.push(innerGrid[row + 2][col]);
+
+ if (col > 0) neighbors.push(innerGrid[row][col - 1]);
+ // if (col > 1) neighbors.push(innerGrid[row][col - 2]);
+  
+ if (col < bwidth - 1) neighbors.push(innerGrid[row][col + 1]);
+  //if (col < bwidth - 2) neighbors.push(innerGrid[row][col + 2]);
+ 
+  //diagonals
+  if(row>1&&col<bwidth-1)
+  neighbors.push(innerGrid[row-1][col+1]);
+  if(row>1&&col>1)
+  neighbors.push(innerGrid[row-1][col-1]);
+  if(row<bheight-1&&col<bwidth-1)
+  neighbors.push(innerGrid[row+1][col+1]);
+  if(row<bheight-1&&col>1)
+  neighbors.push(innerGrid[row+1][col-1]);
+//
+  return neighbors;
+  
+}
