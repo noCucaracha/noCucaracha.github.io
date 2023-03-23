@@ -830,11 +830,11 @@ gridGen();
 setStartFinish();
 
 function mazeGen(){
-  
+  placeOrInvertWall();
   let currentNode = innerGrid[0][bwidth-1];
   openNodes=[];
   openNodes.push(currentNode);
-  let nodeVisited=false;
+  
 
   
   while(openNodes.length>0){
@@ -843,20 +843,15 @@ function mazeGen(){
     console.log(currentNode);
 
     let neighbors = getMazeNeighbors(currentNode);
-   
+    let nodeVisited=true;
     for(let neighbor = 0; neighbor<neighbors.length; neighbor++){   //needs some logical improves 
-      nodeVisited = true;
-      if (neighbors[neighbor].nodeState==="Obstacle") continue;
-      if(neighbors[neighbor].isVisited===false) {
-        nodeVisited = false;
-      }
+      
+      nodeVisited=nodeVisited&&neighbors[neighbor].isVisited;
       
     }
    if(nodeVisited===false) popNeighbor(currentNode,neighbors);
-    
-    
-   
 }
+
 
 function popNeighbor(currentNode,neighbors){
     openNodes.push(currentNode);
@@ -865,7 +860,6 @@ function popNeighbor(currentNode,neighbors){
       console.log(randNeighbor);
       let row = randNeighbor.row, col = randNeighbor.column;
       makeWall(`row${row}_column${col}`);
-        
       randNeighbor.isVisited = true;
       openNodes.push(randNeighbor);
       
