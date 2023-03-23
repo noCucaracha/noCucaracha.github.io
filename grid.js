@@ -850,9 +850,9 @@ function mazeGen(){
       if(neighbors[neighbor].isVisited===false) {
         nodeVisited = false;
       }
-      if(nodeVisited===false) popNeighbor(currentNode,neighbors);
+      
     }
-   
+   if(nodeVisited===false) popNeighbor(currentNode,neighbors);
     
     
    
@@ -865,7 +865,6 @@ function popNeighbor(currentNode,neighbors){
       console.log(randNeighbor);
       let row = randNeighbor.row, col = randNeighbor.column;
       makeWall(`row${row}_column${col}`);
-      randNeighbor.previousNode=currentNode;
         
       randNeighbor.isVisited = true;
       openNodes.push(randNeighbor);
