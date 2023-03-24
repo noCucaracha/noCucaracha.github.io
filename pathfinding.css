@@ -24,17 +24,16 @@
   }
 
   .Obstacle{
-   background:rgb(71, 143, 238);
+   background:rgb(0, 200, 255);
     border-radius:3px;
     height: 20px;
     width: 20px;
-    
-
-    outline: 1.5px solid rgb(0, 0, 0);
+    outline: 1.5px solid;
     display:-ms-inline-grid;
     display:legacy;
     animation-name:myObstacle;
-    animation-duration: 0.5s;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
   }
 
   .nodePath{
@@ -69,10 +68,9 @@
     background-size:90%;
     background-position: center;
     background-repeat: no-repeat;
-    border-radius: 15%;
+    border-radius: 40%;
     text-align: center;
     font-size: smaller;
-    cursor: pointer;
     -webkit-user-select: none;
 -khtml-user-select: none;
 -moz-user-select: none;
@@ -82,6 +80,7 @@ user-select: none;
 animation-name:myFinish;
 animation-duration: 5s;
 animation-iteration-count: infinite;
+  cursor:grab;
   }
 
   
@@ -89,12 +88,10 @@ animation-iteration-count: infinite;
     background: rgb(67, 255, 67);
     text-align: center;
     font-size: smaller;
-    cursor: pointer;
     background-image:url('./icons/start.png');
     background-position: center;
     background-size: 85%;
     background-repeat: no-repeat;
-    
     -webkit-user-select: none;
 -khtml-user-select: none;
 -moz-user-select: none;
@@ -104,6 +101,7 @@ user-select: none;
 border-radius: 15%;
     animation-name:myStart;
     animation-duration: 0.5s;
+    cursor:grab;
   }
  
   
@@ -298,7 +296,13 @@ background-repeat: no-repeat;
 
 @keyframes myObstacle {
 0%{
-  background-size: 70%;
+  outline-color: rgb(68, 0, 45);
+}
+50%{
+  outline-color: rgb(104, 103, 103);
+}
+100%{
+  outline-color: rgb(68, 0, 45);
 }
 
 
@@ -344,31 +348,32 @@ background-repeat: no-repeat;
 
 
 #popup{
-  
+  cursor:default;
   position:fixed;
   height:20%;
   width:40%;
   margin-top:10%;
   margin-left:25%;
   visibility: hidden;
-  border:2px groove white;
-  opacity: 0.8;
-  background-image: linear-gradient(to bottom , rgb(224, 248, 242), rgb(57, 164, 214) 50%);
+  border:3px solid white;
+  border-radius:6px;
+  opacity: 0.9;
+  background-image: linear-gradient(to bottom , rgb(224, 248, 242), rgb(103, 229, 208) 50%);
   background-size: 100%;
   background-position: 50% 100%;
 }
 #popDes{
-  cursor:pointer;
+  cursor:default;
   text-decoration: underline;
   height:80%;
 }
 
 #project_Description{
-  background-image: linear-gradient(to bottom , rgb(224, 248, 242), rgb(57, 164, 214) 50%);
+  background-image: linear-gradient(to top , rgb(224, 248, 242), rgb(57, 164, 214) 90%);
  opacity: 0.9;
  border: 3px solid white;
  border-radius: 5px;
- border-collapse: collapse;
+ 
   position:fixed;
   height:auto;
   width:40%;
@@ -376,8 +381,25 @@ background-repeat: no-repeat;
   margin-left:28%;
   visibility: hidden;
 }
-#hide{
+.hide{
   border: 2px solid white;
+  border-radius: 3px;
   position: relative;
-  margin: 3%;
+ 
+  
+  cursor:pointer;
 }
+
+#noAlgoSlt{
+  background-image: linear-gradient(to bottom , rgb(224, 248, 242), rgb(214, 57, 114) 70%);
+  opacity: 0.9;
+  border: 3px solid white;
+  border-radius: 5px;
+  cursor: url("./icons/ok.png"),auto;
+   position:fixed;
+   height:auto;
+   width:40%;
+   margin-top:5%;
+   margin-left:28%;
+   visibility: hidden;
+ }

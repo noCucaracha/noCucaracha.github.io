@@ -13,11 +13,20 @@ let textHovered=(id)=>{
 }
 
 function showProjDes(){
+ 
   document.getElementById("project_Description").style.visibility="visible";
   document.getElementById("hide").addEventListener("click",function(e){
     e.preventDefault();
     document.getElementById("project_Description").style.visibility="hidden";
   });
+}
+
+function showNoAlgoSlt(){
+  document.getElementById("noAlgoSlt").style.visibility="visible";
+  document.getElementById("noAlgoSlt").addEventListener("click",function(e){
+    e.preventDefault();
+    document.getElementById("noAlgoSlt").style.visibility="hidden";
+  })
 }
 
 let mouseDown = false;
@@ -309,28 +318,8 @@ function makeWall (id){
 }
 
 
-let maxcount = 2*(bheight+bwidth)
-function PlaceRandWall(){
-  for(let i = 0; i <10;i++){
-    let row = Math.abs(getRandInt(bheight));
-    let col = Math.abs(getRandInt(bwidth));
-    let thisNode = document.getElementById(`row${row}_column${col}`);
-    if(obstacleCount<maxcount){
-        if(thisNode.className!="nodeStart"&&thisNode.className!="nodeFinish"){
-        thisNode.className = "Obstacle";
-        innerGrid[row][col].nodeState = "Obstacle";
-        console.log("Change nodeState: innerGrid",row,col,"to",innerGrid[row][col].nodeState);
-        obstacleCount++;
-        }
-        
-    }
 
-}
-if(obstacleCount>=maxcount){
-  console.log("Max random obstacle count reached: ",maxcount);
-  return window.alert("Max random obstacle count reached.");
-}
-}
+
 
 
 
@@ -340,26 +329,22 @@ function algSelector(algorithm){
     switch(algorithm){
         case "aStar":
         tempAlgo =  "aStar"; 
-        document.getElementById("onAlgoSelect").innerHTML = "Algorithm: A*";
+        document.getElementById("onAlgoSelect").innerHTML = "A*";
         document.getElementById("onAlgoSelect").style.color = "lightpink";
         break;
 
         case "aStarNoD":
           tempAlgo =  "aStarNoD"; 
-          document.getElementById("onAlgoSelect").innerHTML = "Algorithm: A* (No Diags)";
+          document.getElementById("onAlgoSelect").innerHTML = "A* (no diags)";
           document.getElementById("onAlgoSelect").style.color = "lightpink";
           break;
 
         case "dijkstras":
         tempAlgo =  "dijkstras";
-        document.getElementById("onAlgoSelect").innerHTML = "Algorithm: Dijkstra's";
+        document.getElementById("onAlgoSelect").innerHTML = "Dijkstra's";
         document.getElementById("onAlgoSelect").style.color = "lightpink";
         break;   
-        case "dijkstrasNoD":
-          tempAlgo =  "dijkstrasNoD";
-          document.getElementById("onAlgoSelect").innerHTML = "Algorithm: Dijkstra's (No Diags)";
-          document.getElementById("onAlgoSelect").style.color = "lightpink";
-          break;   
+          
         default: 
           throw "Please select an algorithm."
           
@@ -380,12 +365,10 @@ function pfVisualizer(){
         case "dijkstras":
           triggerDijkstra(true);
           break;
-        case "dijkstrasNoD":
-          triggerDijkstra(false);
-          break;
+       
         default: 
         
-            window.alert ("No Algorithm Selected"); 
+            showNoAlgoSlt();
             throw "No Algorithm Selected"; 
                
 
@@ -401,11 +384,11 @@ function triggerAStar(diagonal){
  
   setStartFinish();
 }
-function triggerDijkstra(diagonal){
+function triggerDijkstra(){
  
   clearVisualized();
   
-  dijkstras(diagonal);
+  dijkstras();
   
   drawVisited(visitedNodes,ispaused);
 
@@ -425,7 +408,7 @@ function getNodes(innerGrid){
 
 
 let visitedNodes;
-function dijkstras(diagonal){
+function dijkstras(){
   
   visitedNodes = [];
   let shortestNode;
@@ -443,8 +426,8 @@ function dijkstras(diagonal){
     if(shortestNode.distance===Infinity) return visitedNodes;
     shortestNode.isVisited = true;
     visitedNodes.push(shortestNode);
-    if (shortestNode === endNode)return visitedNodes;
-    updateUnvisitedNeighbors(shortestNode, innerGrid, diagonal);    
+    if (shortestNode === endNode) return visitedNodes;
+    updateUnvisitedNeighbors(shortestNode, innerGrid);    
   } 
   
  
@@ -491,9 +474,9 @@ function sortUnvisited(unvisitedNodes){
   unvisitedNodes.sort((a,b)=> a.distance - b.distance);
 }
 
-function updateUnvisitedNeighbors(node,innerGrid,diagonal) {
+function updateUnvisitedNeighbors(node,innerGrid) {
   
-  let unvisitedNeighbors = getUnvisitedNeighbors(node, innerGrid,diagonal);
+  let unvisitedNeighbors = getUnvisitedNeighbors(node, innerGrid);
   
   for (let neighbor of unvisitedNeighbors) {
     neighbor.distance = node.distance + 1;
@@ -502,25 +485,16 @@ function updateUnvisitedNeighbors(node,innerGrid,diagonal) {
   
 }
 
-function getUnvisitedNeighbors(node, innerGrid,diagonal) {
+function getUnvisitedNeighbors(node, innerGrid) {
   let neighbors = [];
   let row = node.row;
   let col = node.column;
- 
+
   if (row > 0) neighbors.push(innerGrid[row - 1][col]);
   if (row < bheight - 1) neighbors.push(innerGrid[row + 1][col]);
   if (col > 0) neighbors.push(innerGrid[row][col - 1]);
   if (col < bwidth - 1) neighbors.push(innerGrid[row][col + 1]);
-  if(diagonal===true){
-  if(row>1&&col<bwidth-1)
-  neighbors.push(innerGrid[row-1][col+1]);
-  if(row>1&&col>1)
-  neighbors.push(innerGrid[row-1][col-1]);
-  if(row<bheight-1&&col<bwidth-1)
-  neighbors.push(innerGrid[row+1][col+1]);
-  if(row<bheight-1&&col>1)
-  neighbors.push(innerGrid[row+1][col-1]);
-  }
+ 
 
   return neighbors.filter(neighbor => !neighbor.isVisited);
   
@@ -922,17 +896,13 @@ function getMazeNeighbors(node) {
   let row = node.row;
   let col = node.column;
  
-if (row > 0) neighbors.push(innerGrid[row - 1][col]);
- // if (row>1)  neighbors.push(innerGrid[row - 2][col]);
-
+ if (row > 0) neighbors.push(innerGrid[row - 1][col]);
+ 
  if (row < bheight - 1) neighbors.push(innerGrid[row + 1][col]);
- // if (row<bheight-2) neighbors.push(innerGrid[row + 2][col]);
-
+ 
  if (col > 0) neighbors.push(innerGrid[row][col - 1]);
- // if (col > 1) neighbors.push(innerGrid[row][col - 2]);
-  
+ 
  if (col < bwidth - 1) neighbors.push(innerGrid[row][col + 1]);
-  //if (col < bwidth - 2) neighbors.push(innerGrid[row][col + 2]);
  
   //diagonals
   if(row>1&&col<bwidth-1)

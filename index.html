@@ -21,8 +21,7 @@
                     <div id="algorithm">
                         <div class="dropdownBorder" onclick="algSelector('aStar')">A*</div>
                         <div class="dropdownBorder" onclick="algSelector('aStarNoD')">A* (No diagonals)</div>
-                        <div class="dropdownBorder" onclick="algSelector('dijkstras')">Dijkstras with diagonals</div>
-                        <div class="dropdownBorder" onclick="algSelector('dijkstrasNoD')">Dijkstras</div>
+                        <div class="dropdownBorder" onclick="algSelector('dijkstras')">Dijkstras</div>
                     </div>
 
                 </div>
@@ -40,16 +39,22 @@
     
         <div id = "container">
             <div id="popup"><h4 id="popTitle">Shortest Path Found!</h4>
-              <div style = "font-style: italic" id="popDes">Show Me</div>
+              <div style = "font-style: italic" id="popDes"></div>
             </div>
-            <div id="project_Description"><h3>About This Project</h3>
+            <div id="noAlgoSlt">
+                <p style="font-style: italic;">Oops!</p>
+                <h4>The visualizer can't run without picking an algorithm...</h4>
+            </div>
+            <div id="project_Description">
+                
+                <h3>About This Project</h3>
                 <p>>>This project visualizes the A* and Dijkstras' path finding process. </br>
                 >>To play around with it, place obstacles as you wish, select an algorithm, 
                 choose the start and finish nodes, then start the visualizer.</p>
                <p>*Obstacles: <img class = "Obstacle" style = "border:1.5px solid black;"></img></p>
                 <p>*Nodes visited: <img class = "nodeVisited" style="animation-iteration-count: infinite;"></img></p>
                <p>*Shortest path node: <img class = "nodePath" style="animation-iteration-count: infinite;"></img></p>
-                <button id = "hide">Ok</button>
+               <button id = "hide">Okay</button>
             </div>
             <table id="mygrid">
         </div>
