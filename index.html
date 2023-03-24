@@ -21,23 +21,16 @@
                     <div id="algorithm">
                         <div class="dropdownBorder" onclick="algSelector('aStar')">A*</div>
                         <div class="dropdownBorder" onclick="algSelector('aStarNoD')">A* (No diagonals)</div>
-                        <div class="dropdownBorder" onclick="algSelector('dijkstras')">Dijkstras'</div>
+                        <div class="dropdownBorder" onclick="algSelector('dijkstras')">Dijkstras with diagonals</div>
+                        <div class="dropdownBorder" onclick="algSelector('dijkstrasNoD')">Dijkstras</div>
                     </div>
 
                 </div>
                 <div class="navOption" onclick="mazeGen()" id="randGen" onmouseover="textHovered(id)"> Place Random Obstacles</div>
                 <div class="navOption" onclick="pfVisualizer()" id="vsStart"onmouseover="textHovered(id)"></div>
                 <div class="navOption" onclick="clearBoard()" id="reload" onmouseover="textHovered(id)">Reload Grid</div>
-                <div id="dropdown" class="navOption">
-                    <span id="projDescri" onmouseover="textHovered(id)">About This Project</span>
-                    <p id="algorithm" class="dropdownBorder" style="width:94%; text-align: left;">
-                        >>This project visualizes the A* and Dijkstras' path finding process. </br>
-                        >>To play around with it, place obstacles as you wish, select an algorithm, 
-                        choose a start and an end point on the grid then kick start the visualizer. </br>
-                        *Obstacles:<img class = "Obstacle" style = "border:1.5px solid black;"></img></br>
-                        *Nodes visited: <img class = "nodeVisited" style="animation-iteration-count: infinite;"></img></br>
-                        *Shortest path node: <a><img class = "nodePath" style="animation-iteration-count: infinite;"></img></a></br>
-                    </p>
+                <div class="navOption" onclick="showProjDes()" onmouseover="textHovered(id)" style="font-style: italic;">About This Project</div>
+
                 
                 
                 </div>
@@ -48,7 +41,15 @@
         <div id = "container">
             <div id="popup"><h4 id="popTitle">Shortest Path Found!</h4>
               <div style = "font-style: italic" id="popDes">Show Me</div>
-
+            </div>
+            <div id="project_Description"><h3>About This Project</h3>
+                <p>>>This project visualizes the A* and Dijkstras' path finding process. </br>
+                >>To play around with it, place obstacles as you wish, select an algorithm, 
+                choose the start and finish nodes, then start the visualizer.</p>
+               <p>*Obstacles: <img class = "Obstacle" style = "border:1.5px solid black;"></img></p>
+                <p>*Nodes visited: <img class = "nodeVisited" style="animation-iteration-count: infinite;"></img></p>
+               <p>*Shortest path node: <img class = "nodePath" style="animation-iteration-count: infinite;"></img></p>
+                <button id = "hide">Ok</button>
             </div>
             <table id="mygrid">
         </div>

@@ -12,6 +12,13 @@ let textHovered=(id)=>{
   
 }
 
+function showProjDes(){
+  document.getElementById("project_Description").style.visibility="visible";
+  document.getElementById("hide").addEventListener("click",function(e){
+    e.preventDefault();
+    document.getElementById("project_Description").style.visibility="hidden";
+  });
+}
 
 let mouseDown = false;
 let nodeClassName;
@@ -348,6 +355,11 @@ function algSelector(algorithm){
         document.getElementById("onAlgoSelect").innerHTML = "Algorithm: Dijkstra's";
         document.getElementById("onAlgoSelect").style.color = "lightpink";
         break;   
+        case "dijkstrasNoD":
+          tempAlgo =  "dijkstrasNoD";
+          document.getElementById("onAlgoSelect").innerHTML = "Algorithm: Dijkstra's (No Diags)";
+          document.getElementById("onAlgoSelect").style.color = "lightpink";
+          break;   
         default: 
           throw "Please select an algorithm."
           
@@ -366,7 +378,10 @@ function pfVisualizer(){
           triggerAStar(false);
           break;
         case "dijkstras":
-          triggerDijkstra();
+          triggerDijkstra(true);
+          break;
+        case "dijkstrasNoD":
+          triggerDijkstra(false);
           break;
         default: 
         
@@ -386,11 +401,11 @@ function triggerAStar(diagonal){
  
   setStartFinish();
 }
-function triggerDijkstra(){
+function triggerDijkstra(diagonal){
  
   clearVisualized();
   
-  dijkstras();
+  dijkstras(diagonal);
   
   drawVisited(visitedNodes,ispaused);
 
@@ -410,7 +425,7 @@ function getNodes(innerGrid){
 
 
 let visitedNodes;
-function dijkstras(){
+function dijkstras(diagonal){
   
   visitedNodes = [];
   let shortestNode;
@@ -429,7 +444,7 @@ function dijkstras(){
     shortestNode.isVisited = true;
     visitedNodes.push(shortestNode);
     if (shortestNode === endNode)return visitedNodes;
-    updateUnvisitedNeighbors(shortestNode, innerGrid);    
+    updateUnvisitedNeighbors(shortestNode, innerGrid, diagonal);    
   } 
   
  
@@ -476,9 +491,9 @@ function sortUnvisited(unvisitedNodes){
   unvisitedNodes.sort((a,b)=> a.distance - b.distance);
 }
 
-function updateUnvisitedNeighbors(node,innerGrid) {
+function updateUnvisitedNeighbors(node,innerGrid,diagonal) {
   
-  let unvisitedNeighbors = getUnvisitedNeighbors(node, innerGrid);
+  let unvisitedNeighbors = getUnvisitedNeighbors(node, innerGrid,diagonal);
   
   for (let neighbor of unvisitedNeighbors) {
     neighbor.distance = node.distance + 1;
@@ -487,7 +502,7 @@ function updateUnvisitedNeighbors(node,innerGrid) {
   
 }
 
-function getUnvisitedNeighbors(node, innerGrid) {
+function getUnvisitedNeighbors(node, innerGrid,diagonal) {
   let neighbors = [];
   let row = node.row;
   let col = node.column;
@@ -496,6 +511,17 @@ function getUnvisitedNeighbors(node, innerGrid) {
   if (row < bheight - 1) neighbors.push(innerGrid[row + 1][col]);
   if (col > 0) neighbors.push(innerGrid[row][col - 1]);
   if (col < bwidth - 1) neighbors.push(innerGrid[row][col + 1]);
+  if(diagonal===true){
+  if(row>1&&col<bwidth-1)
+  neighbors.push(innerGrid[row-1][col+1]);
+  if(row>1&&col>1)
+  neighbors.push(innerGrid[row-1][col-1]);
+  if(row<bheight-1&&col<bwidth-1)
+  neighbors.push(innerGrid[row+1][col+1]);
+  if(row<bheight-1&&col>1)
+  neighbors.push(innerGrid[row+1][col-1]);
+  }
+
   return neighbors.filter(neighbor => !neighbor.isVisited);
   
 }

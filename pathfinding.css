@@ -25,15 +25,12 @@
 
   .Obstacle{
    background:rgb(71, 143, 238);
-    border-radius:0px;
-   
-    background-position: center;
-    
+    border-radius:3px;
     height: 20px;
     width: 20px;
     
 
-    outline: 2px solid rgb(0, 0, 0);
+    outline: 1.5px solid rgb(0, 0, 0);
     display:-ms-inline-grid;
     display:legacy;
     animation-name:myObstacle;
@@ -356,7 +353,7 @@ background-repeat: no-repeat;
   visibility: hidden;
   border:2px groove white;
   opacity: 0.8;
-  background-image: linear-gradient(to bottom , rgb(224, 248, 242), rgb(57, 164, 214) 50%, rgb(51, 41, 198));
+  background-image: linear-gradient(to bottom , rgb(224, 248, 242), rgb(57, 164, 214) 50%);
   background-size: 100%;
   background-position: 50% 100%;
 }
@@ -364,4 +361,23 @@ background-repeat: no-repeat;
   cursor:pointer;
   text-decoration: underline;
   height:80%;
+}
+
+#project_Description{
+  background-image: linear-gradient(to bottom , rgb(224, 248, 242), rgb(57, 164, 214) 50%);
+ opacity: 0.9;
+ border: 3px solid white;
+ border-radius: 5px;
+ border-collapse: collapse;
+  position:fixed;
+  height:auto;
+  width:40%;
+  margin-top:5%;
+  margin-left:28%;
+  visibility: hidden;
+}
+#hide{
+  border: 2px solid white;
+  position: relative;
+  margin: 3%;
 }
