@@ -15,7 +15,7 @@ let textHovered=(id)=>{
 function showProjDes(){
  
   document.getElementById("project_Description").style.visibility="visible";
-  document.getElementById("hide").addEventListener("click",function(e){
+  document.getElementById("project_Description").addEventListener("click",function(e){
     e.preventDefault();
     document.getElementById("project_Description").style.visibility="hidden";
   });
@@ -130,7 +130,6 @@ function setStartFinish(){
           
           targetSelected=false;
           mouseDown = false;
-          targetID = null;
           updateInnerGrid();
           setStartFinish();
         });
@@ -555,7 +554,7 @@ function displayPopUp(){
   }
   else{
     document.getElementById("popTitle").innerHTML = "Shortest Path Found!";
-    document.getElementById("popDes").innerHTML = "Click anywhere to show";
+    document.getElementById("popDes").innerHTML = "";
     popUp.removeEventListener("click",clearVisualized);
     popUp.addEventListener("click",function(e){
       e.preventDefault();
@@ -853,7 +852,7 @@ function mazeGen(){
 }
 
 
-function popNeighbor(currentNode,neighbors){
+  function popNeighbor(currentNode,neighbors){
     openNodes.push(currentNode);
 
       let randNeighbor = neighbors[Math.floor(Math.random()*(neighbors.length))];
@@ -863,10 +862,10 @@ function popNeighbor(currentNode,neighbors){
       randNeighbor.isVisited = true;
       openNodes.push(randNeighbor);
       
-}
+  }
 
 
-clearVisualized();
+  clearVisualized();
 
 
 }

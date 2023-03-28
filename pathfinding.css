@@ -348,7 +348,7 @@ background-repeat: no-repeat;
 
 
 #popup{
-  cursor:default;
+  cursor:url("./icons/ok.png"),auto;
   position:fixed;
   height:auto;
   width:40%;
@@ -374,7 +374,7 @@ background-repeat: no-repeat;
  opacity: 0.9;
  border: 3px solid white;
  border-radius: 5px;
- 
+ cursor:url("./icons/ok.png"),auto;
   position:fixed;
   height:auto;
   width:40%;
@@ -383,12 +383,7 @@ background-repeat: no-repeat;
   visibility: hidden;
   padding-bottom: 10px;
 }
-.hide{
-  border: 2px solid white;
-  border-radius: 3px;
-  position: relative;
-  cursor:pointer;
-}
+
 
 #noAlgoSlt{
   background-image: linear-gradient(to bottom , rgb(224, 248, 242), rgb(214, 57, 114) 70%);
@@ -404,3 +399,4 @@ background-repeat: no-repeat;
    visibility: hidden;
    padding-bottom: 10px;
  }
+
