@@ -129,6 +129,7 @@ function setStartFinish(){
           }
           
           targetSelected=false;
+          targetID=null;
           mouseDown = false;
           updateInnerGrid();
           setStartFinish();
