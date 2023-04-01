@@ -13,12 +13,13 @@ let textHovered=(id)=>{
 }
 
 function showProjDes(){
- 
-  document.getElementById("project_Description").style.visibility="visible";
-  document.getElementById("project_Description").addEventListener("click",function(e){
-    e.preventDefault();
+  if
+  (document.getElementById("project_Description").style.visibility!=="hidden"){
     document.getElementById("project_Description").style.visibility="hidden";
-  });
+  }
+  else if (document.getElementById("project_Description").style.visibility==="hidden"){
+    document.getElementById("project_Description").style.visibility="visible";
+  }
 }
 
 function showNoAlgoSlt(){

@@ -28,7 +28,7 @@
                 <div class="navOption" onclick="mazeGen()" id="randGen" onmouseover="textHovered(id)"> Place Random Obstacles</div>
                 <div class="navOption" onclick="pfVisualizer()" id="vsStart"onmouseover="textHovered(id)"></div>
                 <div class="navOption" onclick="clearBoard()" id="reload" onmouseover="textHovered(id)">Reload Grid</div>
-                <div class="navOption" onclick="showProjDes()" onmouseover="textHovered(id)" style="font-style: italic;">About This Project</div>
+                <div class="navOption" onclick="showProjDes()" id="naviDes" onmouseover="textHovered(id)" style="font-style: italic;">About This Project</div>
 
                 
                 
@@ -45,10 +45,10 @@
                 <p style="font-style: italic;">Oops!</p>
                 <h4>The visualizer can't run without picking an algorithm...</h4>
             </div>
-            <div id="project_Description">
+            <div id="project_Description" onclick="showProjDes()">
                 
                 <h3>About This Project</h3>
-                <p>>>This project visualizes the A* and Dijkstras' path finding process. </br>
+                <p>>>This project visualizes the A* and Dijkstras' path finding process. </br></br>
                 >>To play around with it, place obstacles as you wish, select an algorithm, 
                 choose the start and finish nodes, then start the visualizer.</p>
                <p>*Obstacles: <img class = "Obstacle" style = "border:1.5px solid black;"></img></p>
