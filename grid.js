@@ -32,62 +32,37 @@ function showNoAlgoSlt(){
 
 let mouseDown = false;
 let nodeClassName;
-let targetID=null;
+let targetID="";
 let targetSelected = false;
-function setStartFinish(){
-  for(let row = 0; row <bheight; row++){
-    for (let column = 0; column < bwidth; column++){
-    let mynode = document.getElementById(`row${row}_column${column}`);
-    if (mynode.className ==="nodeStart"||mynode.className === "nodeFinish"){
+function setStartFinish(){ //set eventListeners for all initialized nodes
+    let nodes = document.querySelectorAll(".nodeStart, .nodeFinish, .node");
+
+    for (let i = 0; i<nodes.length; i++){
+    let mynode = nodes[i];
+   
     mynode.addEventListener("mousedown",function(e){
+      if (mynode.className ==="nodeStart"||mynode.className === "nodeFinish"){
       e.preventDefault();
       mouseDown = true;
       targetID = mynode.id;
       nodeClassName = mynode.className;
       targetSelected = true;
-      console.log("Mouse down: ",mouseDown,"ID: ", targetID,"Target is selected:", targetSelected);
+      }
+      if(mynode.className==="node"){
+        e.preventDefault();
+        mouseDown = true;
+      }
+
     });
     mynode.addEventListener("mouseup",function(e){
+      if (mynode.className ==="nodeStart"||mynode.className === "nodeFinish"){
       e.preventDefault();
-
       targetSelected = false;
       mouseDown = false;
-    })
-    }
-    else if(mynode.className==="node"){
-      
-        mynode.addEventListener("mousedown", function(e){
-          e.preventDefault();
-          mouseDown = true;
-        });
-    
-        mynode.addEventListener("mouseover",function(e){
-          if(targetSelected===false){
-            if (mouseDown === true)
-            makeWall(e.target.id);
-          }
-            
-          
-        },false);
-      
-      
-        mynode.addEventListener("mouseup",function(e){
-          e.preventDefault();
-          mouseDown = false;
-          targetSelected = false;
-          console.log("target is selected: ",targetSelected);
-        });
-    
-     
-        
-    mynode.addEventListener("mouseover", function(event){
-      event.preventDefault();
-      if(targetSelected===true){
-        mynode.addEventListener("mouseup",function(event){
-          
-          event.preventDefault();
-      
-          
+      }
+      if(mynode.className==="node"){
+      e.preventDefault();
+         if(targetSelected===true&&targetID!==""){
           let sourceIdString = mynode.id.split("_"), targetIdString = targetID.split("_");
           switch (nodeClassName){
             case "nodeStart":
@@ -99,7 +74,7 @@ function setStartFinish(){
               startNode.isVisited = true;
               startNode.gScore = 0;
               startNode.previousNode = null;
-              
+        
               startNode.distance = 0;
               
              break;
@@ -114,7 +89,7 @@ function setStartFinish(){
               throw "Not a start or finish node.";
 
           }
-          if(!(event.target.className=="nodeFinish"||event.target.className=="nodeStart")){
+          if(!(e.target.className==="nodeFinish"||e.target.className==="nodeStart")){
          let row = parseInt(targetIdString[0].slice(3));
          let col = parseInt(targetIdString[1].slice(6));
          let thisNode = innerGrid[row][col];
@@ -126,26 +101,30 @@ function setStartFinish(){
           thisNode.previousNode = null;
           document.getElementById(targetID).className = "node";
           mynode.className = nodeClassName;
-          console.log("Changed", nodeClassName, "from", targetID, "to", mynode.id);
           }
-          
           targetSelected=false;
-          targetID=null;
+          targetID="";
           mouseDown = false;
           updateInnerGrid();
           setStartFinish();
-        });
       }
+    }
+    mouseDown = false;
+    targetSelected = false;
+    })
+    
+        
+  mynode.addEventListener("mouseover", function(e){
+      if(mynode.className==="node"){
+        if(targetSelected===false&&mouseDown === true){
+          makeWall(e.target.id);
+          }
+        }
+      e.preventDefault();
     },false);
   
   }
-} 
 }
-
-}
-
-
-
 
 
 
@@ -158,17 +137,6 @@ function updateInnerGrid(){
   innerGrid.startNode = startNode;
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 //Initialize global variables to be called;
 let obstacleCount = 0;  //count used to limit maximum obstacles, user selected obstacle won't count;
@@ -304,15 +272,14 @@ function makeWall (id){
     innerGrid[row][col].gScore = Infinity;
     innerGrid[row][col].fScore = Infinity;
     innerGrid[row][col].isVisited = true;
-    console.log("Change nodeState: innerGrid",row,col,"to",innerGrid[row][col].nodeState);
-    console.log( innerGrid[row][col].gScore);
+    
   }
   else {
     if(node.className === "Obstacle"){
       node.className = "node";
       innerGrid[row][col].isVisited = false;
       innerGrid[row][col].nodeState = "node";
-    console.log("Change nodeState: innerGrid",row,col,"to",innerGrid[row][col].nodeState);
+   
     }
   }
      
@@ -513,8 +480,7 @@ function getNodesInShortestPathOrder() {
     currentNode = currentNode.previousNode;
   }
   i = shortestPath.length-1;
-  console.log(shortestPath);
- 
+  
     displayPopUp();
   
 
@@ -688,8 +654,6 @@ function aStar(diagonal){
         
       }
       if(currentNode===endNode){
-      
-        console.log(closedNodes);
         
         return  drawClosed(closedNodes);
         
@@ -805,7 +769,6 @@ function getAStarPath(){
   shortestPath.push(currentNode);
   currentNode = currentNode.previousNode;
   }
-  console.log(shortestPath);
   
   for(let i=0;i<shortestPath.length-1;i++){
     let row = shortestPath[i].row;
@@ -831,7 +794,7 @@ gridGen();
 setStartFinish();
 
 function mazeGen(){
-  placeOrInvertWall();
+  clearVisualized();
   let currentNode = innerGrid[0][bwidth-1];
   openNodes=[];
   openNodes.push(currentNode);
@@ -841,7 +804,6 @@ function mazeGen(){
   while(openNodes.length>0){
     currentNode = openNodes.shift();
 
-    console.log(currentNode);
 
     let neighbors = getMazeNeighbors(currentNode);
     let nodeVisited=true;
@@ -858,39 +820,17 @@ function mazeGen(){
     openNodes.push(currentNode);
 
       let randNeighbor = neighbors[Math.floor(Math.random()*(neighbors.length))];
-      console.log(randNeighbor);
+      
       let row = randNeighbor.row, col = randNeighbor.column;
       makeWall(`row${row}_column${col}`);
       randNeighbor.isVisited = true;
       openNodes.push(randNeighbor);
       
   }
-
-
-  clearVisualized();
-
-
 }
 
 
-function placeOrInvertWall(){
-  /* 
-  for(let row = 0; row <bheight-1; row++){
-    makeWall(`row${row}_column0`);
-    makeWall(`row${row}_column${bwidth-1}`);
-   }
-  for(let col = 0; col < bwidth-1; col++){
-    makeWall(`row0_column${col}`);
-    makeWall(`row${bheight-1}_column${col}`);
-  }
- */
-for(let row = 0; row<bheight; row++){
-  for(let column = 0; column<bwidth; column++){
-    makeWall(`row${row}_column${column}`);
-  }
-}
-  clearVisualized();
-}
+
 
 function getMazeNeighbors(node) {
   let neighbors = [];
