@@ -1,70 +1,71 @@
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-       	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>INFO4290 Path Finding Project</title>
-    <link rel="stylesheet" href="./pathfinding.css"/>
 
-   
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFO4290 Path Finding Project</title>
+    <link rel="stylesheet" href="./pathfinding.css" />
+
+
 
 
 </head>
-    
 
-    <body>
-       
-        <div id="title">Simple Path Finding Visualizer</div>
-        <div class="navBar">
-            
-                <div id = "dropdown" class="navOption" >
-                    <span id = "onAlgoSelect" onmouseover="textHovered(id)">Algorithms</span>
-                    <div id="algorithm">
-                        <div class="dropdownBorder" onclick="algSelector('aStar')">A*</div>
-                        <div class="dropdownBorder" onclick="algSelector('aStarNoD')">A* (No diagonals)</div>
-                        <div class="dropdownBorder" onclick="algSelector('dijkstras')">Dijkstra's</div>
-                    </div>
 
-                </div>
-                <div class="navOption" onclick="mazeGen()" id="randGen" onmouseover="textHovered(id)"> Place Random Obstacles</div>
-                <div class="navOption" onclick="pfVisualizer()" id="vsStart"onmouseover="textHovered(id)"></div>
-                <div class="navOption" onclick="clearBoard()" id="reload" onmouseover="textHovered(id)">Reload Grid</div>
-                <div class="navOption" onclick="showProjDes()" id="naviDes" onmouseover="textHovered(id)" style="font-style: italic;">About This Project</div>
+<body>
 
-                
-                
-                </div>
-                
-          
+    <div id="title">Simple Path Finding Visualizer by <a>Kaiwen Tian</a></div>
+    <div class="navBar">
+
+        <div id="dropdown" class="navOption">
+            <span id="onAlgoSelect" onmouseover="textHovered(id)">Algorithms</span>
+            <div id="algorithm">
+                <div class="dropdownBorder" onclick="algSelector('aStar')">A*</div>
+                <div class="dropdownBorder" onclick="algSelector('aStarNoD')">A* (No diagonals)</div>
+                <div class="dropdownBorder" onclick="algSelector('dijkstras')">Dijkstra's</div>
+            </div>
+
         </div>
-    
-        <div id = "container">
-            <div id="popup"><h4 id="popTitle">Shortest Path Found!</h4>
-              <div style = "font-style: italic" id="popDes"></div>
-            </div>
-            <div id="noAlgoSlt">
-                <p style="font-style: italic;">Oops!</p>
-                <h4>The visualizer can't run without picking an algorithm...</h4>
-            </div>
-            <div id="project_Description" onclick="showProjDes()">
-                
-                <h3>About This Project</h3>
-                <p>>>This project visualizes the A* and Dijkstras' path finding process. </br></br>
-                >>To play around with it, place obstacles as you wish, select an algorithm, 
+        <div class="navOption" onclick="mazeGen()" id="randGen" onmouseover="textHovered(id)"> Place Random Obstacles
+        </div>
+        <div class="navOption" onclick="pfVisualizer()" id="vsStart" onmouseover="textHovered(id)"></div>
+        <div class="navOption" onclick="clearBoard()" id="reload" onmouseover="textHovered(id)">Reload Grid</div>
+        <div class="navOption" onclick="showProjDes()" id="naviDes" onmouseover="textHovered(id)"
+            style="font-style: italic;">About This Project</div>
+
+
+
+    </div>
+
+
+    </div>
+
+    <div id="container">
+        <div id="popup">
+            <h4 id="popTitle">Shortest Path Found!</h4>
+            <div style="font-style: italic" id="popDes"></div>
+        </div>
+        <div id="noAlgoSlt">
+            <p style="font-style: italic;">Oops!</p>
+            <h4>The visualizer can't run without picking an algorithm...</h4>
+        </div>
+        <div id="project_Description" onclick="showProjDes()">
+
+            <h3>About This Project</h3>
+            <p>>>This project visualizes the A* and Dijkstras' path finding process. </br></br>
+                >>To play around with it, place obstacles as you wish, select an algorithm,
                 choose the start and finish nodes, then start the visualizer.</p>
-               <p>*Obstacles: <img class = "Obstacle" style = "border:1.5px solid black;"></img></p>
-                <p>*Nodes visited: <img class = "nodeVisited" style="animation-iteration-count: infinite;"></img></p>
-               <p>*Shortest path node: <img class = "nodePath" style="animation-iteration-count: infinite;"></img></p>
-            </div>
-            <table id="mygrid">
+            <p>*Obstacles: <img class="Obstacle" style="border:1.5px solid black;"></img></p>
+            <p>*Nodes visited: <img class="nodeVisited" style="animation-iteration-count: infinite;"></img></p>
+            <p>*Shortest path node: <img class="nodePath" style="animation-iteration-count: infinite;"></img></p>
         </div>
-    
-    </body>
+        <table id="mygrid">
+    </div>
+
+</body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  
-  <script src="./grid.js"></script>
-  
-  
-</html>  
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="./grid.js"></script>
 
 
-
+</html>
